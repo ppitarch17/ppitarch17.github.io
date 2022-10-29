@@ -1,6 +1,8 @@
-var me = document.querySelector("me");
+const menu = document.getElementById("menu");
 
-function changeColor() {
-    console.log("ey");
-    me.style.color = 'blue';
-}
+Array.from(document.getElementsByClassName("menu-item"))
+    .forEach((item, index) => {
+        item.onmouseover = () => {
+            menu.dataset.activeIndex = index;
+        }
+    })
