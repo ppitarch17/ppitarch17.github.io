@@ -2,10 +2,15 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     height: 100%;
     margin: 0;
     background-color: rgb(20, 20, 20);
+    cursor: url(img/radio_button_unchecked_FILL1_wght500_GRAD0_opsz48.png);
 }
 
 
@@ -62,8 +67,8 @@ body {
     width: 100vw;
 
     background-image: radial-gradient(
-        rgba(255, 255, 255, 0.1) 9%,
-        transparent 9%
+        rgba(255, 255, 255, 0.5) 4%,
+        transparent 3%
     );
     background-position: 0% 0%;
     background-size: 12vmin 12vmin; 
@@ -88,6 +93,7 @@ body {
     height: 100%;
     width: 100%;
     background-image: url("img/IMG_8887.JPG");
+    background-attachment: fixed;
 
     position: absolute;
     left: 0%;
@@ -95,7 +101,7 @@ body {
     z-index: 0;
 
     background-position: center 40%;
-    background-size: 120vmax;
+    background-size: cover;
     opacity: 0.15;
 
     transform: opacity 800ms ease,
@@ -103,8 +109,10 @@ body {
     background-position 800ms ease;
 }
 
+@media (orientation: portrait) {
+}
+
 .menu-items:hover ~ #menu-background-image {
-    background-size: 150vmax;
     opacity: 0.1;
 }
 
@@ -124,3 +132,23 @@ body {
     background-position: center 60%;
 }
 
+.container {
+    height: 100vh;
+}
+
+.box {
+    display: flex;
+    width: 66%;
+    margin: 50px auto;
+}
+
+.me-data {
+    width: 100%;
+    height: fit-content;
+    border: 1px solid gray;
+}
+
+h1 {
+    color: white;
+    padding: 0 15px;
+}
