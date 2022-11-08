@@ -1,5 +1,8 @@
 * {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Roboto Mono', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+
 }
 
 html {
@@ -7,12 +10,8 @@ html {
 }
 
 body {
-    height: 100%;
-    margin: 0;
     background-color: rgb(20, 20, 20);
-    cursor: url(img/radio_button_unchecked_FILL1_wght500_GRAD0_opsz48.png);
 }
-
 
 #menu {
     height: 100vh;
@@ -21,27 +20,27 @@ body {
 }
 
 #menu[data-active-index="0"] > #menu-background-pattern {
-    background-position: 0% -25%;
+    background-position: 5% -25%;
 }
 
 #menu[data-active-index="1"] > #menu-background-pattern {
-    background-position: 0% -50%;
+    background-position: 10% -50%;
 }
 
 #menu[data-active-index="2"] > #menu-background-pattern {
-    background-position: 0% -75%;
+    background-position: 5% -75%;
 }
 
 #menu[data-active-index="3"] > #menu-background-pattern {
-    background-position: 0% -100%;
+    background-position: 15% -100%;
 }
 
 .menu-item {
     color: white;
-    font-size: clamp(3rem, 8vw, 8rem);
-    font-family: "Ibarra Real Nova", serif;
+    font-size: clamp(3rem, 5vw, 8rem);
+    font-weight: 300;
 
-    display: block;  /*Stack*/
+    display: block; 
     text-decoration: none;
     padding: clamp(0.25rem, 0.5vw, 1rem) 0rem;
 
@@ -109,9 +108,6 @@ body {
     background-position 800ms ease;
 }
 
-@media (orientation: portrait) {
-}
-
 .menu-items:hover ~ #menu-background-image {
     opacity: 0.1;
 }
@@ -133,22 +129,170 @@ body {
 }
 
 .container {
-    height: 100vh;
+    height: 100%;
+}
+
+.title {
+    text-align: center;
+    font-size: 7vw ;
+}
+
+.desc {
+    width: 75%;
+    margin: auto;
 }
 
 .box {
     display: flex;
-    width: 66%;
+    width: 75%;
     margin: 50px auto;
+    color: white;
 }
 
 .me-data {
-    width: 100%;
-    height: fit-content;
     border: 1px solid gray;
+    width: 100%;
+    flex-basis: 32%;
+    padding: 15px;
 }
 
-h1 {
+@media (orientation: portrait) {
+    .box {
+        display: block;
+    }
+}
+
+
+
+.notion {
+    height: 1.5em;
+}
+
+.me-data-title {
+    display: flex;
     color: white;
-    padding: 0 15px;
+    align-items: center;
+    min-height: 50%;
+}
+
+.me-data-content {
+    height: 100%;
+    align-items: center;
+}
+
+h1, p, span {
+    color: white;
+    padding: 10px 15px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.icon, .notion {
+    font-size: 30px;
+    padding: 0 0 0 15px;
+    color: white;
+    fill: white;
+}
+
+.timeline-element {
+    display: flex;
+    align-items: center;
+    width: 75%;
+    margin: 50px auto;
+}
+
+span {
+    width: 10%;
+}
+
+.projects-container {
+    width: 75%;
+    margin: 50px auto;
+    display: flex;
+    
+}
+
+@media (orientation: portrait) {
+    .projects-container {
+        display: block;
+    }
+}
+
+.project {
+    width: 100%;
+    flex-basis: 50%;
+    background-size: cover;
+    background-position: center 0;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 5px 5px;
+
+    transition: all 400ms ease;
+}
+
+.project img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 1;
+    transition: all 400ms ease;
+
+}
+
+.project:hover > img{
+    opacity: 0.5;
+}
+
+.project p {
+    position: absolute;
+    bottom: 0;
+    opacity: 0;
+    transition: all 400ms ease;
+}
+
+.project:hover > p {
+    opacity: 1;
+}
+
+
+.contact-links {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.contact-box {
+    width: 100%;
+    height: 15vh;
+    padding: 0;
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+
+    transition: opacity 400ms ease;
+}
+
+.contact-box:hover {
+    opacity: 0.5;
+}
+
+#github {
+    background-color:grey;
+}
+
+#mail {
+    background-color:red;
+}
+
+#insta {
+    background:linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+}
+
+@media (orientation: portrait) {
+    .contact-links {
+        display: block;
+    }
 }
