@@ -1,5 +1,5 @@
 * {
-    font-family: 'Roboto Mono', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Lexend', sans-serif;
     margin: 0;
     padding: 0;
 
@@ -63,7 +63,7 @@ body {
 
 #menu-background-pattern {
     height: 100vh;
-    width: 100vw;
+    width: 100%;
 
     background-image: radial-gradient(
         rgba(255, 255, 255, 0.5) 4%,
@@ -132,17 +132,6 @@ body {
     height: 100%;
 }
 
-.title {
-    text-align: center;
-    font-size: 4vw;
-    padding: 25px 0 15px 0;
-}
-
-.desc {
-    width: 75%;
-    margin: auto;
-}
-
 .box {
     display: flex;
     width: 75%;
@@ -166,48 +155,6 @@ body {
 
 
 
-.notion {
-    height: 1.5em;
-}
-
-.me-data-title {
-    display: flex;
-    color: white;
-    align-items: center;
-    min-height: 50%;
-}
-
-.me-data-content {
-    height: 100%;
-    align-items: center;
-}
-
-h1, p, span {
-    color: white;
-    padding: 10px 15px;
-}
-
-a {
-    text-decoration: none;
-}
-
-.icon, .notion {
-    font-size: 30px;
-    padding: 0 0 0 15px;
-    color: white;
-    fill: white;
-}
-
-.timeline-element {
-    display: flex;
-    align-items: center;
-    width: 75%;
-    margin: 50px auto;
-}
-
-span {
-    width: 10%;
-}
 
 .projects-container {
     width: 75%;

@@ -10,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 <body>
 
@@ -25,45 +28,42 @@
         </div>
     </div>
 
-    <section class="container" id="pablo">
-        <h1 class="title">Quién soy?</h1>
-        <p class="desc">Mi nombre es Pablo Pitarch. Soy graduado de ingeniería de software en la Universidad Jaume I. Dentro de la programación, tengo especial interés por el desarrollo frontend.</p>
-        <p class="desc">Estuve un semestre de intercambio en Seúl, Corea del Sur. Fue una experiencia increíble que me aportó muchos conocimientos que no habría adquirido si me hubiese quedado.</p>
-        <p class="desc">Además de mi pasión por la programación, estoy muy interesado en la fotografía y los deportes. Tengo un dron!</p>
-        <div class="box">
-            <div class="me-data">    
-                <div class="me-data-title">        
-                    <i class="fa-sharp fa-solid fa-file-code icon"></i><h1> Ingeniero de Software</h1>
+    <section class="" id="pablo">
+        <h1 class="text-3xl text-center py-6 text-white">Quién soy?</h1>
+        <p class="w-9/12 mx-auto my-5 text-white text-center">Mi nombre es Pablo Pitarch. Soy graduado de ingeniería de software en la Universidad Jaume I. Dentro de la programación, tengo especial interés por el desarrollo frontend.</p>
+        <p class="w-9/12 mx-auto my-5 text-white text-center">Estuve un semestre de intercambio en Seúl, Corea del Sur. Fue una experiencia increíble que me aportó muchos conocimientos que no habría adquirido si me hubiese quedado.</p>
+        <p class="w-9/12 mx-auto my-5 text-white text-center">Además de mi pasión por la programación, estoy muy interesado en la fotografía y los deportes. Tengo un dron!</p>
+        <div class="flex flex-col sm:flex-row w-full sm:w-9/12 h-full mx-auto my-auto">
+            <div class="flex flex-col bg-gray-800 rounded-lg shadow-lg p-6 m-2">
+                <div class="flex items-center">
+                    <i class="fas fa-file-code text-xl mr-2 text-white" ></i>
+                    <h1 class="text-2xl font-bold text-white">Ingeniero de Software</h1>
                 </div>
-                <div class="me-data-content">
-                    <p>Programo tanto en funcional como POO: Python, C++, JavaScript, Java, TypeScript.</p>
-                </div>
+                <p class="mt-4 text-gray-300">Especializado en frontend - Angular. Programo tanto en funcional como POO: Python, C++, JavaScript, Java, TypeScript.</p>
             </div>
-            <div class="me-data">
-                <div class="me-data-title">
-                    <i class="fa-sharp fa-solid fa-car icon"></i><h1> Pasión por el motorsport</h1>
+            <div class="flex flex-col bg-gray-800 rounded-lg shadow-lg p-6 m-2">
+                <div class="flex items-center">
+                    <i class="fas fa-car text-xl mr-2 text-white"></i>
+                    <h1 class="text-2xl font-bold text-white">Pasión por el motorsport</h1>
                 </div>
-                <div class="me-data-content">
-                    <p>Mi gran pasión está en la rueda. Sueño con un día trabajar en un equipo de motorsport.</p>
+                <p class="mt-4 text-gray-300">Mi gran pasión está en la rueda. Gracias a UJI Electric Racing Team, pude cumplir un sueño: trabajar en un equipo de motorsport.</p>
+            </div>
+            <div class="flex flex-col bg-gray-800 rounded-lg shadow-lg p-6 m-2">
+                <div class="flex items-center">
+                    <img src="img/notion.png" alt="" class="w-6 h-6 mr-2">
+                    <h1 class="text-2xl font-bold text-white">Gran uso de Notion</h1>
                 </div>
-            </div>    
-            <div class="me-data">
-                <div class="me-data-title">
-                    <img src="img/notion.png" alt="" class="notion"><h1> Gran uso de Notion</h1>
-                </div>
-                <div class="me-data-content">
-                    <p>Tengo gran experiencia con este software de gestión de proyectos.</p>
-                </div>
-            </div>    
+                <p class="mt-4 text-gray-300">Tengo gran experiencia con este software de gestión de proyectos.</p>
+            </div>
         </div>
     </section>
 
-    <section class="container" id="xp">
-        <h1 class="title">Mi experiencia</h1>
-        <div class="timeline-element">
-            <span>2023</span>
-            <i class="fa-sharp fa-solid fa-motorcycle icon"></i>
-            <p>
+    <section class="mx-auto px-4 w-9/12" id="xp">
+        <h1 class="text-3xl text-center py-6 text-white">Mi experiencia</h1>
+        <div class="p-4 border-l-4 border-gray-500 mb-4">
+            <i class="fas fa-motorcycle text-white"></i>
+            <span class="text-white font-bold">2023</span>
+            <p class="mt-2 text-white">
                 Jefe del departamento de telemetría en UJI Electric Racing Team. <br>
                 Participamos en la competición de MotoStudent. <br>
                 Soy el encargado de desarrollar y analizar la telemetría, poner a punto el motor y ayudar con el cableado eléctrico.
@@ -73,39 +73,39 @@
                 <br>- 9º Final Race
             </p> 
         </div>
-        <div class="timeline-element">
-            <span>2022 ~ 2023</span>
-            <i class="fa-sharp fa-solid fa-code-compare icon"></i>
-            <p>
+        <div class="p-4 border-l-4 border-gray-500 mb-4">
+            <i class="fas fa-code text-white"></i>
+            <span class=" text-white font-bold">2022 ~ 2023</span>
+            <p class="mt-2 text-white">
                 Hice prácticas en IoTSens. Mi trabajo era configurar un entorno de pruebas automatizado y desarrollar tests para un sistema de monitorización de dispositivos IoT.
             </p>
         </div>
-        <div class="timeline-element">
-            <span>2022</span>
-            <i class="fa-sharp fa-solid fa-plane icon"></i>
-            <p>
+        <div class="p-4 border-l-4 border-gray-500 mb-4">
+            <i class="fas fa-plane text-white"></i>
+            <span class="text-white font-bold">2022</span>
+            <p class="mt-2 text-white">
                 Estuve estudiando un semestre en Sejong University, Corea del Sur.
             </p>
         </div>
-        <div class="timeline-element">
-            <span>2019 ~ 2023</span>
-            <i class="fa-sharp fa-solid fa-computer icon"></i>
-            <p>
+        <div class="p-4 border-l-4 border-gray-500 mb-4">
+            <i class="fas fa-laptop text-white"></i>
+            <span class="text-white font-bold">2019 ~ 2023</span>
+            <p class="mt-2 text-white">
                 Graduado en Ingeniería Informática en la Universidad Jaume I.
                 Mi ámbito de especialización es el desarrollo de software.
             </p>
         </div>
-        <div class="timeline-element">
-            <span>2018 ~ 2019</span>
-            <i class="fa-sharp fa-solid fa-angle-up icon"></i>
-            <p>
+        <div class="p-4 border-l-4 border-gray-500 mb-4">
+            <i class="fas fa-angle-up text-white"></i>
+            <span class="text-white font-bold">2018 ~ 2019</span>
+            <p class="mt-2 text-white">
                 Trabajé de monitor de tenis en Ripotenis.
             </p>
         </div>
     </section>
 
-    <section class="container" id="proyectos">
-        <h1 class="title">Mis proyectos</h1>
+    <section class="" id="proyectos">
+        <h1 class="text-3xl text-center py-6 text-white">Mis proyectos</h1>
         <div class="projects-container">
             <div class="project">
                 <img src="img/UJIERT_03-01.jpg" alt="UJIERT_03">
@@ -126,27 +126,23 @@
         </div>
     </section>
 
-    <section class="container" id="contacto">
+    <section class="" id="contacto">
         <h1 class="title">
             Contacto
         </h1>
-        <div class="contact-links">
-            <a class="contact-box" id="github" href="https://github.com/ppitarch17" target="_blank">
+        <div class="flex flex-col md:flex-row justify-evenly">
+            <a class="w-full h-20 flex justify-around items-center transition-opacity duration-400 ease-in" id="github" href="https://github.com/ppitarch17" target="_blank">
                 <p>Github</p>
-                <svg class="notion icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                <svg class="text-white fill-current w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
             </a>
-            <a class="contact-box" id="mail" href="mailto:pablopitarchlim@gmail.com" target="_blank">
+            <a class="w-full h-20 flex justify-around items-center transition-opacity duration-400 ease-in" id="mail" href="mailto:pablopitarchlim@gmail.com" target="_blank">
                 <p>Email</p>
-                <i class="fa-sharp fa-solid fa-envelope icon"></i>
+                <i class="fa-sharp fa-solid fa-envelope text-xl mr-2 text-white"></i>
             </a>
-            <a class="contact-box" id="linkedin" href="https://www.linkedin.com/in/pablo-pitarch/" target="_blank">
-                <p>Linkedin</p>
-                <svg class="notion icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/></svg>            </a>
+            <a class="w-full h-20 flex justify-around items-center transition-opacity duration-400 ease-in" id="linkedin" href="https://www.linkedin.com/in/pablo-pitarch/" target="_blank">
+                <p>Linkedin</p> 
+                <svg class="text-xl mr-2 text-white fill-current w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/></svg>            </a>
         </div>
-    </section>
-    
-    <section id="footer">
-
     </section>
 
 </body>
