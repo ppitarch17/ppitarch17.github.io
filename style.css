@@ -158,7 +158,7 @@ body {
 
 .projects-container {
     width: 75%;
-    margin: 50px auto;
+    margin: auto;
     display: flex;
     flex-wrap: wrap;
 
@@ -180,8 +180,9 @@ body {
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    padding: 5px 5px;
+    margin: 5px 5px;
     transition: all 400ms ease;
+    border-radius: 0.5rem;
 }
 
 .project img {
@@ -190,16 +191,18 @@ body {
     object-fit: cover;
     opacity: 1;
     transition: all 400ms ease;
-
+    
 }
 
 .project:hover > img{
     opacity: 0.5;
+    transform: scale(1.05);
 }
 
 .project p {
     position: absolute;
-    bottom: 0;
+    left: 10px;
+    bottom: 10px;
     opacity: 0;
     transition: all 400ms ease;
 }
