@@ -48,9 +48,11 @@ body {
 }
 
 .menu-items {
-    margin-left: clamp(4rem, 20vw, 48rem);
+    margin-right: clamp(4rem, 20vw, 48rem);
     position: relative;
     z-index: 2;
+    margin-left: auto;
+    text-align: right;
 }
 
 .menu-items:hover > .menu-item {
