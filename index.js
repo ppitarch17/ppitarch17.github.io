@@ -13,6 +13,8 @@ let popup = document.querySelector('.popup');
 
 popup.addEventListener('click', function () {
     this.style.display = 'none';
+    document.body.style.overflow = 'auto';
+
 });
 
 // Step 2: Iterate over the selected elements
@@ -27,14 +29,9 @@ tools.forEach(tool => {
         popup.style.display = 'flex';
         popup.querySelector('p').textContent = toolExplanation;
         popup.querySelector('img').src = this.querySelector('img').src;
-        
-        // With this line
-        // Swal.fire({
-        //     title: '',
-        //     text: toolExplanation,
-        //     icon: 'info',
-        //     confirmButtonText: 'Cool'
-        // });
+        document.body.style.overflow = 'hidden';
+
+
     });
 });
 
