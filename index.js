@@ -7,31 +7,25 @@ Array.from(document.getElementsByClassName("menu-item"))
         }
     })
 
-// Step 1: Select all the tool elements
 let tools = document.querySelectorAll('.tool');
 let popup = document.querySelector('.popup');
 
 popup.addEventListener('click', function () {
     this.style.display = 'none';
     document.body.style.overflow = 'auto';
-
+    scrollFunction() 
 });
 
-// Step 2: Iterate over the selected elements
 tools.forEach(tool => {
-    // Step 3: Add a click event listener
     tool.addEventListener('click', function () {
-        // Step 4: Identify the tool that was clicked
         let toolName = this.querySelector('img').alt;        
-        
-        // Step 5: Display an explanation for the clicked tool
         let toolExplanation = getToolExplanation(toolName);
         popup.style.display = 'flex';
         popup.querySelector('p').textContent = toolExplanation;
         popup.querySelector('img').src = this.querySelector('img').src;
+        popup.querySelector('img').alt = toolName;
         document.body.style.overflow = 'hidden';
-
-
+        mybutton.style.display = "none";
     });
 });
 
@@ -51,4 +45,24 @@ function getToolExplanation(toolName) {
     };
 
     return explanations[toolName] || 'No explanation available.';
+}
+
+
+var mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
