@@ -18,7 +18,7 @@
 
 </head>
 
-<body>
+<body class="text-white">
 
     <div id="menu">
         <div class="menu-items">
@@ -31,57 +31,75 @@
             <div id="menu-background-image"></div>
         </div>
     </div>
-    
+
     <button onclick="topFunction()" id="myBtn" class="group">
         <img src="img/icons/up-arrow.svg" alt="" class="size-5 invert group-hover:scale-110 transition">
     </button>
 
     <section class="w-9/12 md:w-[720px] mx-auto" id="pablo">
         <h1 class="text-3xl text-center py-6 text-white">About me</h1>
-        <p class="mx-auto my-5 text-white ">My name is Pablo Pitarch. I am a frontend developer
+        <p class="mx-auto my-5 text-white ">
+            My name is Pablo Pitarch. I am a frontend developer
             graduated in software engineering from Universitat Jaume I. </p>
+        <p class="mx-auto my-5 text-white ">
+            Since I was little, I've been traveling a lot due to my mom being Singaporean, my father being Spanish and
+            both of them really enjoying to travel. Visiting so many countries has helped me learn a lot about other
+            cultures and to be able to interact and understand other points of view. Furthermore, Singapore is a very
+            diverse country and that has had a big impact on me as I used to visit every year. I feel like I can adapt
+            very well to the people around me and help them to be better.
+        </p>
+
+        <p class="mx-auto my-5 text-white ">
+            My sport growing up was tennis. Like traveling, playing tennis meant a lot of alone time. I think of myself
+            as a person who knows how to work alone, while also knowing how to understand and communicate with other
+            people.
+        </p>
+
         <p class="mx-auto my-5 text-white">I spent a semester studying abroad in Seoul, South Korea.
             It was an incredible experience that provided me with a lot of knowledge that I wouldn't have gained if I
             had stayed.</p>
         <p class="mx-auto my-5 text-white">In addition to my passion for programming, I am very
             interested in photography and motorsports. And I have a drone!</p>
-            <h2 class="text-3xl text-center py-6 text-white">Tools</h2>
+        <h2 class="text-3xl text-center py-6 text-white">Tools</h2>
         <div class="flex flex-wrap justify-center md:justify-start w-full md:w-[720px] mx-auto w-full">
-            <div class="hidden popup fixed top-0 left-0 z-10 h-screen w-screen bg-gray-900 bg-opacity-90 backdrop-blur-sm justify-center items-center">
+            <div
+                class="hidden popup fixed top-0 left-0 z-10 h-screen w-screen bg-gray-900 bg-opacity-90 backdrop-blur-sm justify-center items-center">
                 <div class="w-9/12 md:w-[360px] flex flex-col items-center justify-center ">
                     <img src="img/icons/logo-angular.svg" alt="Angular" class="size-10 invert m-5">
                     <p class="text-white text-center">Angular is a platform for building web applications.</p>
-                    <button class="hover:text-gray-300 transition text-white p-2 rounded-lg mt-5"><img src="img/icons/cross.svg" alt="" class="size-5 invert hover:invert-0 transition-all duration-500"></button>
+                    <button class="hover:text-gray-300 transition text-white p-2 rounded-lg mt-5"><img
+                            src="img/icons/cross.svg" alt=""
+                            class="size-5 invert hover:invert-0 transition-all duration-500"></button>
                 </div>
             </div>
-            <div class="rounded-lg p-3 bg-red-400 hover:scale-105 transition m-2 tool">
+            <div class="rounded-lg p-3 bg-red-400 hover:scale-105 transition m-2 tool cursor-pointer">
                 <img src="img/icons/logo-angular.svg" alt="Angular" class="size-10">
             </div>
-            <div class="rounded-lg p-3 bg-blue-300 hover:scale-105 transition m-2 tool">
+            <div class="rounded-lg p-3 bg-blue-300 hover:scale-105 transition m-2 tool cursor-pointer">
                 <img src="img/icons/logo-typescript.svg" alt="TypeScript" class="size-10">
             </div>
-            <div class="rounded-lg p-3 bg-yellow-200 hover:scale-105 transition m-2 tool">
+            <div class="rounded-lg p-3 bg-yellow-200 hover:scale-105 transition m-2 tool cursor-pointer">
                 <img src="img/icons/logo-python.svg" alt="Python" class="size-10">
             </div>
-            <div class="rounded-lg p-3 bg-blue-400 hover:scale-105 transition m-2 tool">
+            <div class="rounded-lg p-3 bg-blue-400 hover:scale-105 transition m-2 tool cursor-pointer">
                 <img src="img/icons/logo-tailwind.svg" alt="Tailwind" class="size-10">
             </div>
-            <div class="rounded-lg p-3 bg-orange-300 hover:scale-105 transition m-2 tool">
+            <div class="rounded-lg p-3 bg-orange-300 hover:scale-105 transition m-2 tool cursor-pointer">
                 <img src="img/icons/logo-firebase.svg" alt="Firebase" class="size-10">
             </div>
-            <div class="rounded-lg p-3 bg-purple-300 hover:scale-105 transition m-2 tool">
+            <div class="rounded-lg p-3 bg-purple-300 hover:scale-105 transition m-2 tool cursor-pointer">
                 <img src="img/icons/logo-visual-studio-code.svg" alt="VSCode" class="size-10">
             </div>
-            <div class="rounded-lg p-3 bg-gray-300 hover:scale-105 transition m-2 tool">
+            <div class="rounded-lg p-3 bg-gray-300 hover:scale-105 transition m-2 tool cursor-pointer">
                 <img src="img/icons/logo-github.svg" alt="Github" class="size-10">
             </div>
-            <div class="rounded-lg p-3 bg-pink-300 hover:scale-105 transition m-2 tool">
+            <div class="rounded-lg p-3 bg-pink-300 hover:scale-105 transition m-2 tool cursor-pointer">
                 <img src="img/icons/logo-figma.svg" alt="Figma" class="size-10">
             </div>
-            <div class="rounded-lg p-3 bg-blue-300 hover:scale-105 transition m-2 tool">
+            <div class="rounded-lg p-3 bg-blue-300 hover:scale-105 transition m-2 tool cursor-pointer">
                 <img src="img/icons/logo-photoshop.svg" alt="Photoshop" class="size-10">
             </div>
-            <div class="rounded-lg p-3 bg-white hover:scale-105 transition m-2 tool">
+            <div class="rounded-lg p-3 bg-white hover:scale-105 transition m-2 tool cursor-pointer">
                 <img src="img/notion.png" alt="Notion" class="size-10">
             </div>
         </div>
@@ -112,14 +130,24 @@
         </div> -->
     </section>
 
-    <section class="mx-auto px-4 w-9/12 md:w-[720px]"  id="xp">
+    <section class="mx-auto px-4 w-9/12 md:w-[720px]" id="xp">
         <h1 class="text-3xl text-center py-6 text-white">My experience</h1>
         <div class="p-4 border-l-4 border-gray-500 mb-4">
             <i class="fas fa-laptop text-white"></i>
             <span class="text-white font-bold m-3">2023 ~ currently</span>
             <p class="mt-2 text-white">
                 I work as a frontend web developer at Amazing Up. <br>
-                My job involves developing web applications with Angular. <br>
+                My job involves developing various web applications with Angular. <br>
+                Projects I've been directly involved with, with significant impact: <br>
+            <ul class="py-2">
+                <li class="py-2 border-y border-gray-200">Full development of GEMS: Angular 17 PWA web application for
+                    content management and simultaneous multimedia playback on multiple screens.
+                    <br class="my-1">Deployed in the Spanish Royal Palace, the train and metro stations of Mallorca and many other places.
+                </li>
+                <li class="py-2">Development of SARA: CMS for managing routes and POIs on an accessible interactive map.
+                    <br>Deployed in the Valladolid tourist office.
+                </li>
+            </ul>
             </p>
         </div>
         <div class="p-4 border-l-4 border-gray-500 mb-4">
@@ -130,10 +158,16 @@
                 We took part in the VII edition of MotoStudent. <br>
                 I was responsible for developing and analyzing telemetry, tuning the engine, and assisting with
                 electrical wiring.
+                <br>- 🥇 Play-off Race
                 <br>- 🥈 MS1 Finals
                 <br>- 🥉 Red Bull MotoBoost InnoCall
-                <br>- 🥇 Play-off Race
                 <br>- 9th Final Race
+            </p>
+
+            <p class="mt-2 text-white">
+                At my time in UJIE I developed a lot as a person. I learned a lot about team dynamics and how to
+                function well between different departments. It being a small team, we had to interact with all of the
+                members of the team to achieve one common goal.
             </p>
         </div>
         <div class="p-4 border-l-4 border-gray-500 mb-4">
@@ -150,6 +184,11 @@
             <p class="mt-2 text-white">
                 I studied abroad for a semester at Sejong University, South Korea.
             </p>
+            <p class="mt-2 text-white">
+                My exchange program in South Korea has been one of my biggest learning periods of my life. To spend my
+                day to day surrounded by hundreds of people from different countries and cultures taught me a lot about
+                how other people approach their lives.
+            </p>
         </div>
         <div class="p-4 border-l-4 border-gray-500 mb-4">
             <i class="fas fa-laptop text-white"></i>
@@ -164,6 +203,8 @@
             <span class="text-white font-bold m-3">2018 ~ 2019</span>
             <p class="mt-2 text-white">
                 I worked as a tennis instructor at Ripotenis in Benicassim.
+                <br>
+                It was really enjoyable to teach tennis to kids and teens.
             </p>
         </div>
     </section>
@@ -171,6 +212,16 @@
     <section class="" id="proyectos">
         <h1 class="text-3xl text-center py-6 text-white">My projects</h1>
         <div class="projects-container text-white w-9/12 md:w-[720px]">
+            <div
+                class="hidden popupProj fixed top-0 left-0 z-10 h-screen w-screen bg-gray-900 bg-opacity-90 backdrop-blur-sm justify-center items-center">
+                <div class="w-9/12 md:w-[720px] flex flex-col items-center justify-center ">
+                    <img src="img/icons/logo-angular.svg" alt="Angular" class="h-full w-full m-5">
+                    <p class="text-white text-center">Angular is a platform for building web applications.</p>
+                    <button class="hover:text-gray-300 transition text-white p-2 rounded-lg mt-5"><img
+                            src="img/icons/cross.svg" alt=""
+                            class="size-5 invert hover:invert-0 transition-all duration-500"></button>
+                </div>
+            </div>
             <div class="project">
                 <img src="img/UJIERT_03-01.jpg" alt="UJIERT_03">
                 <p>Final prototype UJIERT_03 at Motorland</p>
@@ -221,4 +272,5 @@
 
 </body>
 <script src="index.js"></script>
+
 </html>
