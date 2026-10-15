@@ -81,15 +81,7 @@ html.js-anim [data-load] {
   opacity: 0;
 }
 
-#prompt-ask.typing::after {
-  content: '';
-  display: inline-block;
-  width: 0.08em;
-  height: 0.9em;
-  margin-left: 0.08em;
-  vertical-align: -0.1em;
-  background: var(--color-red);
-}
+
 
 /* The team wordmark is set in Calibri; Carlito is its metric-compatible open clone */
 .logo-type {

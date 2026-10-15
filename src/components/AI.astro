@@ -1,41 +1,43 @@
 ---
-import { prompt, agentsDo, iDo, aiTools } from '../data/ai';
+import { aiExample, aiSteps } from '../data/ai';
 ---
 
 <section id="ai" class="relative z-10 bg-ink py-24 text-paper md:py-32">
-  <div class="wrap">
-    <h2 class="display text-[clamp(2rem,4.2vw,3.6rem)] [--wdth:112] [--wght:800]">Working with AI</h2>
-
-    <!-- Scroll-driven prompt: types itself as you scroll through it -->
-    <div id="prompt" class="mt-14 md:mt-20" aria-label={`Example request: ${prompt.ask} Agent reply: ${prompt.answer}`}>
-      <p class="max-w-[34ch] font-display text-[clamp(1.35rem,2.4vw,2rem)] leading-[1.2] [font-variation-settings:'wdth'_90,'wght'_500]" aria-hidden="true">
-        <span class="mr-2 text-red">&gt;</span><span id="prompt-ask" data-text={prompt.ask}>{prompt.ask}</span>
+  <div class="wrap grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
+    <div class="lg:sticky lg:top-28 lg:self-start">
+      <h2 class="display text-[clamp(2rem,4.2vw,3.6rem)] [--wdth:112] [--wght:800]">How I build with AI</h2>
+      <p class="mt-5 max-w-[42ch] text-lg leading-relaxed text-paper/85">
+        I use Claude Code as a coding partner every day. It takes the slow parts off my hands, and I stay responsible
+        for every decision and every line that ships.
       </p>
-      <p id="prompt-answer" class="mt-5 max-w-[48ch] border-l-2 border-blue pl-4 text-steel-light" aria-hidden="true">
-        {prompt.answer}
+      <p class="mt-8 flex gap-6 text-sm text-steel-light" aria-hidden="true">
+        <span class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-red"></span>Me</span>
+        <span class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-blue"></span>Claude</span>
       </p>
     </div>
 
-    <div class="mt-16 flex flex-wrap gap-x-20 gap-y-10 md:mt-20">
-      <div>
-        <h3 class="text-sm text-steel-light">Agents</h3>
-        <ul class="mt-2 space-y-1 text-lg">
-          {agentsDo.map((t) => <li>{t}</li>)}
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-sm text-steel-light">Me</h3>
-        <ul class="mt-2 space-y-1 text-lg">
-          {iDo.map((t) => <li>{t}</li>)}
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-sm text-steel-light">Tools</h3>
-        <ul class="mt-2 space-y-1 text-lg">
-          {aiTools.map((t) => <li>{t}</li>)}
-        </ul>
-      </div>
-    </div>
+    <div>
+      <p class="text-sm text-steel-light">Example task</p>
+      <p class="display mt-1 text-[clamp(1.4rem,2.4vw,2rem)] [--wdth:95] [--wght:700]">“{aiExample}”</p>
 
+      <ol id="ai-steps" class="relative mt-10">
+        <span class="absolute top-2 bottom-2 left-[5px] w-[2px] bg-paper/15" aria-hidden="true">
+          <span id="ai-line" class="absolute inset-0 origin-top bg-paper/70"></span>
+        </span>
+        {
+          aiSteps.map((s) => (
+            <li class="ai-step relative pb-8 pl-10 last:pb-0">
+              <span class:list={['absolute top-[0.55em] left-0 h-3 w-3 rounded-full', s.who === 'me' ? 'bg-red' : 'bg-blue']} aria-hidden="true" />
+              <p class="sr-only">{s.who === 'me' ? 'Me:' : 'Claude:'}</p>
+              <p class="max-w-[44ch] text-lg leading-relaxed">{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+
+      <p class="mt-12 max-w-[46ch] text-steel-light">
+        The busywork goes faster, so more of my time goes into what matters: the architecture, the UX and the details.
+      </p>
+    </div>
   </div>
 </section>

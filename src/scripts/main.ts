@@ -350,27 +350,27 @@ if (phaseTrack) {
   }
 }
 
-/* ---------- AI: the request types itself as you scroll ---------- */
-const promptBox = $('#prompt');
-const ask = $('#prompt-ask');
-const answer = $('#prompt-answer');
-if (promptBox && ask && answer && !reduced) {
-  const full = ask.dataset.text!;
-  ask.textContent = '';
-  gsap.set(answer, { opacity: 0, y: 16 });
-  ScrollTrigger.create({
-    trigger: promptBox,
-    start: 'center 60%',
-    end: '+=500',
-    pin: true,
-    scrub: true,
-    onUpdate: ({ progress }) => {
-      const n = Math.round(full.length * clamp01(progress / 0.7));
-      ask.textContent = full.slice(0, n);
-      ask.classList.toggle('typing', n < full.length);
-      gsap.to(answer, { opacity: progress > 0.78 ? 1 : 0, y: progress > 0.78 ? 0 : 16, duration: 0.4, overwrite: true });
-    },
-  });
+/* ---------- AI: the steps light up one by one as the line draws down ---------- */
+const aiSteps = $$('#ai-steps .ai-step');
+if (aiSteps.length) {
+  if (reduced) gsap.set('#ai-line', { scaleY: 1 });
+  else {
+    gsap.set('#ai-line', { scaleY: 0 });
+    gsap.set(aiSteps, { opacity: 0.25 });
+    ScrollTrigger.create({
+      trigger: '#ai-steps',
+      start: 'top 70%',
+      end: 'bottom 60%',
+      scrub: 0.5,
+      onUpdate: ({ progress }) => {
+        gsap.set('#ai-line', { scaleY: progress });
+        aiSteps.forEach((el, i) => {
+          const on = progress >= i / aiSteps.length - 0.02;
+          gsap.to(el, { opacity: on ? 1 : 0.25, duration: 0.3, overwrite: true });
+        });
+      },
+    });
+  }
 }
 
 /* ---------- Gravity Puzzle: flip gravity on the screenshot and the title ---------- */

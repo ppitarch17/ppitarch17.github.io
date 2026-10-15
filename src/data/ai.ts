@@ -1,11 +1,10 @@
-// TODO(Pablo): make these match exactly how you work.
-export const prompt = {
-  ask: 'Keep every screen in sync, even after it drops offline.',
-  answer: 'Plan ready: heartbeat per player, drift check every 5 s. Waiting for your review.',
-};
+// One everyday task, followed from start to finish. TODO(Pablo): adjust to match how you work.
+export const aiExample = 'Add search to a list of screens';
 
-export const agentsDo = ['Explore unfamiliar code', 'Draft refactors', 'Review every diff'];
-
-export const iDo = ['Architecture', 'UX and details', 'Final review and testing'];
-
-export const aiTools = ['Claude Code', 'Copilot', 'MCP', 'LLM APIs'];
+export const aiSteps: { who: 'me' | 'claude'; text: string }[] = [
+  { who: 'me', text: 'I explain the goal: staff need to find a screen by its name.' },
+  { who: 'claude', text: 'Claude reads the project and proposes a plan: which files change, and how.' },
+  { who: 'me', text: 'I check the plan fits the architecture, adjust it and approve it.' },
+  { who: 'claude', text: 'Claude writes the code and the tests.' },
+  { who: 'me', text: 'I read every line, try it on the real thing and ship it.' },
+];
