@@ -20,8 +20,8 @@ export const experience: Role[] = [
     current: true,
     summary: 'Production Angular apps for public spaces.',
     highlights: [
-      'GEMS: synced multi-screen playback, running in the Royal Palace and Mallorca’s metro.',
-      'SARA: accessible map CMS for the Valladolid tourist office.',
+      'A multi-screen content and playback platform, running in historic venues and public transport stations.',
+      'An accessible map CMS for a city tourist office.',
     ],
     stack: ['Angular', 'TypeScript', 'PWA'],
   },

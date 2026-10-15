@@ -10,8 +10,8 @@ export type PhaseId = (typeof phases)[number]['id'];
 
 // TODO(Pablo): check which phases you covered on each project.
 export const phaseProjects: { name: string; phases: PhaseId[] }[] = [
-  { name: 'GEMS', phases: ['req', 'design', 'build', 'ship', 'run'] },
+  { name: 'Multi-screen platform', phases: ['req', 'design', 'build', 'ship', 'run'] },
   { name: 'Magnetis website', phases: ['req', 'design', 'build', 'ship', 'run'] },
   { name: 'UJIERT telemetry', phases: ['req', 'design', 'build', 'ship'] },
-  { name: 'SARA', phases: ['req', 'design', 'build', 'ship'] },
+  { name: 'Tourism map CMS', phases: ['req', 'design', 'build', 'ship'] },
 ];
