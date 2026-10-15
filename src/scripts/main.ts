@@ -128,6 +128,40 @@ if (hero) {
 const emailEl = $('[data-flex="email"]');
 if (emailEl) flexText(emailEl, { base: { wdth: 90, wght: 700 }, near: { wdth: 140, wght: 900 }, radius: 260 });
 
+/* ---------- About: the red dot flies Castellón → Singapore → Seoul ---------- */
+const route = $('#route');
+if (route) {
+  const arcs = $$<SVGPathElement>('.route-arc', route);
+  const placesEls = $$('.route-place', route);
+  const captions = $$('.route-caption', route);
+  const dot = $<SVGCircleElement>('#route-dot');
+  const lens = arcs.map((a) => a.getTotalLength());
+  const setRoute = (p: number) => {
+    // p 0..1 spread across the arcs; a place lights up once the dot reaches it
+    const span = p * arcs.length;
+    arcs.forEach((a, i) => {
+      const v = clamp01(span - i);
+      a.style.strokeDasharray = `${lens[i]}`;
+      a.style.strokeDashoffset = String(lens[i] * (1 - v));
+    });
+    const i = Math.min(arcs.length - 1, Math.floor(span));
+    const pt = arcs[i].getPointAtLength(lens[i] * clamp01(span - i));
+    dot?.setAttribute('cx', pt.x.toFixed(1));
+    dot?.setAttribute('cy', pt.y.toFixed(1));
+    const reached = (k: number) => k === 0 || span >= k - 0.06;
+    placesEls.forEach((el, k) => el.style.setProperty('opacity', reached(k) ? '1' : '0.35'));
+    captions.forEach((el, k) => {
+      el.style.opacity = reached(k) ? '1' : '0.35';
+      el.style.transition = 'opacity 0.4s';
+    });
+  };
+  if (reduced) setRoute(1);
+  else {
+    setRoute(0);
+    ScrollTrigger.create({ trigger: route, start: 'top 75%', end: 'bottom 75%', scrub: 0.6, onUpdate: (st) => setRoute(st.progress) });
+  }
+}
+
 /* ---------- Experience: vertical scroll drives a horizontal lap ---------- */
 const mm = gsap.matchMedia();
 mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
