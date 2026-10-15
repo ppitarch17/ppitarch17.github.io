@@ -1,0 +1,73 @@
+---
+import { Image } from 'astro:assets';
+import site1 from '../assets/magnetis-site-1.jpg';
+import site2 from '../assets/magnetis-site-2.jpg';
+import site3 from '../assets/magnetis-site-3.jpg';
+import site4 from '../assets/magnetis-site-4.jpg';
+import solar from '../assets/DJI_0422.JPG';
+
+const screens = [
+  { src: site1, alt: 'magnetis.es home page with the Magnetis Ingeniería title over a landscape photo' },
+  { src: site2, alt: 'magnetis.es services section, from first plan to commissioning' },
+  { src: site3, alt: 'magnetis.es project list' },
+  { src: site4, alt: 'magnetis.es careers and contact sections' },
+];
+---
+
+<section id="magnetis" class="relative py-24 md:py-32">
+  <div class="wrap grid gap-14 lg:grid-cols-[1fr_1.35fr] lg:items-center lg:gap-16">
+    <div>
+      <h2 class="display text-[clamp(2rem,4.2vw,3.6rem)] [--wdth:112] [--wght:800]">Magnetis Ingeniería</h2>
+      <p class="mt-2 text-steel">Engineering firm in Castellón, 2023 to now</p>
+
+      <dl class="mt-10 space-y-8">
+        <div>
+          <dt class="text-sm text-red">Website</dt>
+          <dd class="mt-2 max-w-[38ch] text-lg leading-relaxed">
+            I designed and built their new site in Angular, from the first sketch to launch.
+          </dd>
+          <dd class="mt-3">
+            <a href="https://www.magnetis.es" target="_blank" rel="noopener" class="font-semibold underline decoration-red decoration-2 underline-offset-4">Visit magnetis.es</a>
+          </dd>
+        </div>
+        <div>
+          <dt class="text-sm text-red">Drone inspections</dt>
+          <dd class="mt-2 max-w-[38ch] text-lg leading-relaxed">
+            Aerial footage of solar installations, so clients can see the state of their panels.
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- The site scrolls inside the window as you scroll the page; the drone shot floats over it -->
+    <div class="relative pb-16 lg:pb-20">
+      <a
+        href="https://www.magnetis.es"
+        target="_blank"
+        rel="noopener"
+        class="group block overflow-hidden rounded-[6px] bg-ink shadow-[0_40px_80px_-30px_rgb(15_27_45/0.5)]"
+        aria-label="Open magnetis.es in a new tab"
+      >
+        <div class="flex items-center gap-1.5 px-3 py-2" aria-hidden="true">
+          <span class="h-2 w-2 rounded-full bg-paper/25"></span>
+          <span class="h-2 w-2 rounded-full bg-paper/25"></span>
+          <span class="h-2 w-2 rounded-full bg-paper/25"></span>
+          <span class="ml-3 text-xs text-paper/60">magnetis.es</span>
+        </div>
+        <div class="relative aspect-[16/10] overflow-hidden">
+          <div id="magnetis-scroll" class="absolute inset-x-0 top-0 will-change-transform">
+            {
+              screens.map((s, i) => (
+                <Image src={s.src} alt={i === 0 ? s.alt : ''} widths={[640, 1000, 1440]} sizes="(min-width: 1024px) 55vw, 100vw" class="block w-full" />
+              ))
+            }
+          </div>
+        </div>
+      </a>
+
+      <figure id="magnetis-drone" class="absolute bottom-0 left-2 w-[42%] overflow-hidden rounded-[4px] border-4 border-paper shadow-[0_24px_48px_-20px_rgb(15_27_45/0.5)] md:-left-10">
+        <Image src={solar} alt="Aerial drone shot of a solar installation" widths={[400, 700]} sizes="25vw" class="aspect-[4/3] w-full object-cover" />
+      </figure>
+    </div>
+  </div>
+</section>

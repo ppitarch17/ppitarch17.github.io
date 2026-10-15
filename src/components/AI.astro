@@ -1,0 +1,41 @@
+---
+import { prompt, agentsDo, iDo, aiTools } from '../data/ai';
+---
+
+<section id="ai" class="relative z-10 bg-ink py-24 text-paper md:py-32">
+  <div class="wrap">
+    <h2 class="display text-[clamp(2rem,4.2vw,3.6rem)] [--wdth:112] [--wght:800]">Working with AI</h2>
+
+    <!-- Scroll-driven prompt: types itself as you scroll through it -->
+    <div id="prompt" class="mt-14 md:mt-20" aria-label={`Example request: ${prompt.ask} Agent reply: ${prompt.answer}`}>
+      <p class="max-w-[34ch] font-display text-[clamp(1.35rem,2.4vw,2rem)] leading-[1.2] [font-variation-settings:'wdth'_90,'wght'_500]" aria-hidden="true">
+        <span class="mr-2 text-red">&gt;</span><span id="prompt-ask" data-text={prompt.ask}>{prompt.ask}</span>
+      </p>
+      <p id="prompt-answer" class="mt-5 max-w-[48ch] border-l-2 border-blue pl-4 text-steel-light" aria-hidden="true">
+        {prompt.answer}
+      </p>
+    </div>
+
+    <div class="mt-16 flex flex-wrap gap-x-20 gap-y-10 md:mt-20">
+      <div>
+        <h3 class="text-sm text-steel-light">Agents</h3>
+        <ul class="mt-2 space-y-1 text-lg">
+          {agentsDo.map((t) => <li>{t}</li>)}
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm text-steel-light">Me</h3>
+        <ul class="mt-2 space-y-1 text-lg">
+          {iDo.map((t) => <li>{t}</li>)}
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm text-steel-light">Tools</h3>
+        <ul class="mt-2 space-y-1 text-lg">
+          {aiTools.map((t) => <li>{t}</li>)}
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,163 @@
+---
+import { Image } from 'astro:assets';
+import bike from '../assets/UJIERT_03-01.jpg';
+import workshop from '../assets/PXL_20230924_182829945.jpg';
+import telemetry from '../assets/telemetriaUJIERT.jpeg';
+import paddock from '../assets/PXL_20231009_120559992.jpg';
+
+// UJI Electric Racing Team swoosh, traced from the team banner.
+const logoPath =
+  'M 0 155 C 65 80, 145 15, 215 8 C 255 4, 270 30, 273 70 C 275 112, 292 130, 340 124 C 425 104, 515 72, 585 97 C 635 117, 650 190, 705 198 C 775 208, 835 180, 860 130 C 875 98, 905 88, 945 105 C 985 122, 1015 150, 1035 175';
+
+// The real swoosh is a brush stroke: hairline at both ends, thick in the middle.
+// Build that tapered outline at build time by offsetting the centre line along its normals.
+function taperedOutline(d: string, minW = 2.5, maxW = 30, steps = 48) {
+  const n = d.match(/-?\d+(\.\d+)?/g)!.map(Number);
+  const pts: { x: number; y: number; tx: number; ty: number }[] = [];
+  let [x0, y0] = [n[0], n[1]];
+  for (let i = 2; i + 5 < n.length; i += 6) {
+    const [x1, y1, x2, y2, x3, y3] = n.slice(i, i + 6);
+    for (let k = pts.length ? 1 : 0; k <= steps; k++) {
+      const t = k / steps, u = 1 - t;
+      pts.push({
+        x: u * u * u * x0 + 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t * x3,
+        y: u * u * u * y0 + 3 * u * u * t * y1 + 3 * u * t * t * y2 + t * t * t * y3,
+        tx: 3 * u * u * (x1 - x0) + 6 * u * t * (x2 - x1) + 3 * t * t * (x3 - x2),
+        ty: 3 * u * u * (y1 - y0) + 6 * u * t * (y2 - y1) + 3 * t * t * (y3 - y2),
+      });
+    }
+    [x0, y0] = [x3, y3];
+  }
+  const cum = [0];
+  for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y));
+  const total = cum[cum.length - 1];
+  const left: string[] = [], right: string[] = [];
+  pts.forEach((p, i) => {
+    const s = cum[i] / total;
+    const w = minW + (maxW - minW) * Math.pow(Math.sin(Math.PI * s), 0.8);
+    const len = Math.hypot(p.tx, p.ty) || 1;
+    const nx = -p.ty / len, ny = p.tx / len;
+    left.push(`${(p.x + (nx * w) / 2).toFixed(1)} ${(p.y + (ny * w) / 2).toFixed(1)}`);
+    right.push(`${(p.x - (nx * w) / 2).toFixed(1)} ${(p.y - (ny * w) / 2).toFixed(1)}`);
+  });
+  return `M ${left.join(' L ')} L ${right.reverse().join(' L ')} Z`;
+}
+const logoShape = taperedOutline(logoPath);
+
+const results = [
+  { place: '1st', race: 'Play-off Race' },
+  { place: '2nd', race: 'MS1 Finals' },
+  { place: '3rd', race: 'Red Bull MotoBoost InnoCall' },
+  { place: '9th', race: 'Final Race' },
+];
+
+const beats = [
+  {
+    label: 'The bike',
+    text: 'A student-built electric race bike, designed and assembled by a team of nine to race at MotorLand Aragón.',
+    img: bike,
+    alt: 'The finished UJIERT_03 on its stand in the MotorLand Aragón pit lane',
+    position: 'object-[40%_50%]',
+  },
+  {
+    label: 'The build',
+    text: 'Built by students in a workshop, piece by piece. I helped with the electrical wiring.',
+    img: workshop,
+    alt: 'The UJIERT_03 half-built on a workshop lift, with its wiring and electronics exposed',
+    position: 'object-center',
+  },
+  {
+    label: 'My part',
+    text: 'I led telemetry: the system that logged the bike’s data on track, and the analysis we used to tune the motor.',
+    img: telemetry,
+    alt: 'Telemetry graphs recorded on the UJIERT_03',
+    contain: true,
+  },
+  {
+    label: 'Results',
+    results: true,
+    img: paddock,
+    alt: 'The UJIERT_03 in the team’s paddock tent during the competition',
+    position: 'object-center',
+  },
+];
+---
+
+<section id="ujiert" class="relative z-10 overflow-hidden bg-paper">
+  <div class="ujiert-pin relative py-24 lg:flex lg:items-center lg:motion-safe:h-[100svh] lg:motion-safe:pt-24 lg:motion-safe:pb-12">
+    <div class="wrap grid gap-12 lg:grid-cols-[auto_1fr] lg:items-center lg:gap-20">
+      <!-- Desktop photo frame: one image per beat, stacked -->
+      <div id="ujiert-photo" class="relative hidden aspect-[4/5] h-[min(70svh,640px)] overflow-hidden rounded-[4px] bg-paper-2 lg:block">
+        {
+          beats.map((b, i) => (
+            <div class:list={['ujiert-img absolute inset-0', b.contain && 'bg-white p-6', i > 0 && 'invisible opacity-0']}>
+              <Image
+                src={b.img}
+                alt={b.alt}
+                widths={[480, 800, 1100]}
+                sizes="40vw"
+                class:list={['h-full w-full', b.contain ? 'object-contain' : `object-cover ${b.position}`]}
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="relative">
+        <h2 class="display text-[clamp(2rem,4.2vw,3.6rem)] [--wdth:112] [--wght:800]">UJIERT_03</h2>
+        <p class="mt-2 text-steel">UJI Electric Racing Team, MotoStudent VII, 2023</p>
+
+        <div class="beats relative mt-10 lg:motion-safe:h-[260px]">
+          {
+            beats.map((b, i) => (
+              <div class:list={['beat lg:motion-safe:absolute lg:motion-safe:inset-x-0 lg:motion-safe:top-0', i > 0 && 'mt-14 lg:mt-10 lg:motion-safe:mt-0']}>
+                <Image
+                  src={b.img}
+                  alt={b.alt}
+                  widths={[400, 800]}
+                  sizes="100vw"
+                  class:list={['mb-5 aspect-[4/3] w-full rounded-[4px] lg:hidden', b.contain ? 'bg-white object-contain p-3' : `object-cover ${b.position}`]}
+                />
+                <p class="text-sm text-red">{b.label}</p>
+                {b.text && <p class="mt-3 max-w-[38ch] text-lg leading-relaxed">{b.text}</p>}
+                {b.results && (
+                  <ol class="mt-3 max-w-[38ch] divide-y divide-ink/10 border-y border-ink/10">
+                    {results.map((r) => (
+                      <li class="flex items-baseline gap-5 py-2.5">
+                        <span class="display w-12 shrink-0 text-2xl [--wdth:80] [--wght:800]">{r.place}</span>
+                        <span class="text-lg">{r.race}</span>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </div>
+            ))
+          }
+        </div>
+
+        <!-- Team logo, traced from the paddock banner. The red dot rides it as scroll progress; hover or click for a hot lap. -->
+        <button type="button" id="uji-logo" class="group mt-10 block w-[min(220px,60%)] text-left" aria-label="UJI Electric Racing Team logo. Click for a hot lap.">
+          <svg viewBox="-20 -30 1080 520" class="w-full overflow-visible" aria-hidden="true">
+            <defs>
+              <mask id="logo-mask-draw" maskUnits="userSpaceOnUse" x="-60" y="-60" width="1180" height="340">
+                <path id="logo-draw" d={logoPath} fill="none" stroke="#fff" stroke-width="46" />
+              </mask>
+              <mask id="logo-mask-trail" maskUnits="userSpaceOnUse" x="-60" y="-60" width="1180" height="340">
+                <path id="logo-trail" d={logoPath} fill="none" stroke="#fff" stroke-width="46" />
+              </mask>
+            </defs>
+            <path d={logoShape} fill="#0f1b2d" fill-opacity="0.13" />
+            <path d={logoShape} fill="#0f1b2d" mask="url(#logo-mask-draw)" />
+            <path id="logo-trail-fill" d={logoShape} fill="#e13b2e" mask="url(#logo-mask-trail)" opacity="0" />
+            <circle id="logo-dot" r="19" fill="#e13b2e" cx="0" cy="155" />
+            <g class="logo-type" fill="#0f1b2d">
+              <text x="0" y="335" font-size="150" font-weight="700" textLength="1035" lengthAdjust="spacing">UJI electric</text>
+              <text x="0" y="470" font-size="108" font-weight="400" textLength="1035" lengthAdjust="spacing">Racing Team</text>
+            </g>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

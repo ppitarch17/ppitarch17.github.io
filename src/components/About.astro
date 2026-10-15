@@ -1,0 +1,26 @@
+---
+import { tools } from '../data/skills';
+---
+
+<section id="about" class="relative py-24 md:py-32">
+  <div class="wrap grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-16">
+    <h2 class="display text-[clamp(2rem,4.2vw,3.6rem)] [--wdth:112] [--wght:800]">About</h2>
+
+    <div class="max-w-[52ch] space-y-5 text-lg leading-relaxed">
+      <p>
+        I’m a frontend developer at Amazing Up, building Angular apps for public spaces. I grew up between Spain and
+        Singapore, studied software engineering at Universitat Jaume I, and led telemetry for the UJI Electric Racing
+        Team.
+      </p>
+      <p class="text-base text-steel">
+        Uses daily:{' '}
+        {tools.map((t, i) => (
+          <>
+            <span class="whitespace-nowrap text-ink" title={t.note}>{t.name}</span>{i < tools.length - 1 ? ', ' : '.'}
+          </>
+        ))}
+      </p>
+      <p class="text-base text-steel">Off the clock: motorsport, photography and the occasional drone flight.</p>
+    </div>
+  </div>
+</section>

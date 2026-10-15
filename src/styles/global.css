@@ -1,0 +1,97 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-paper: #e9ecef;
+  --color-paper-2: #dfe3e8;
+  --color-ink: #0f1b2d;
+  --color-ink-2: #1b2a41;
+  --color-blue: #2f86d8;
+  --color-red: #e13b2e;
+  --color-steel: #566172;
+  --color-steel-light: #9aa4b2;
+
+  --font-display: 'Anybody', 'Arial Narrow', sans-serif;
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  body {
+    background: var(--color-paper);
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-red);
+    color: var(--color-paper);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-red);
+    outline-offset: 4px;
+  }
+  a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+}
+
+/* Display type: the variable axes are driven from JS through custom properties */
+@utility display {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' var(--wdth, 100), 'wght' var(--wght, 700);
+  font-weight: normal;
+  line-height: 0.86;
+}
+
+@utility wrap {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: 16px;
+  @media (width >= 768px) {
+    padding-inline: 40px;
+  }
+  /* the right gutter belongs to the racing line */
+  @media (width >= 1024px) {
+    padding-right: 11vw;
+  }
+}
+
+.flex-char {
+  display: inline-block;
+  font-variation-settings: 'wdth' var(--wdth, 100), 'wght' var(--wght, 700);
+}
+
+.kerb {
+  height: 10px;
+  background: repeating-linear-gradient(90deg, var(--color-red) 0 28px, var(--color-paper) 28px 56px);
+}
+
+html.js-anim [data-load] {
+  opacity: 0;
+}
+
+#prompt-ask.typing::after {
+  content: '';
+  display: inline-block;
+  width: 0.08em;
+  height: 0.9em;
+  margin-left: 0.08em;
+  vertical-align: -0.1em;
+  background: var(--color-red);
+}
+
+/* The team wordmark is set in Calibri; Carlito is its metric-compatible open clone */
+.logo-type {
+  font-family: Calibri, Carlito, sans-serif;
+}
