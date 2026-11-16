@@ -1,0 +1,74 @@
+---
+import { phases, phaseProjects } from '../data/phases';
+import { getLang } from '../i18n';
+
+const lang = getLang(Astro.currentLocale);
+const t = {
+  en: { title: 'Start to finish', intro: 'On most projects I’ve owned every phase, not just the code.', sector: 'Sector', see: 'See it on:' },
+  es: { title: 'De principio a fin', intro: 'En la mayoría de proyectos me he encargado de todas las fases, no solo del código.', sector: 'Sector', see: 'Míralo en:' },
+}[lang];
+---
+
+<section id="phases" class="relative py-24 md:py-32">
+  <div class="wrap">
+    <h2 class="display text-[clamp(2rem,4.2vw,3.6rem)] [--wdth:112] [--wght:800]">{t.title}</h2>
+    <p class="mt-3 max-w-[46ch] text-steel">{t.intro}</p>
+
+    <!-- The lap: five sectors. On scroll the red dot drives through them. -->
+    <div id="phase-track" class="relative mt-14 md:mt-20">
+      <span id="phase-dot" class="absolute top-0 left-0 z-10 hidden h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red md:block" aria-hidden="true"></span>
+      <ol class="grid gap-8 md:grid-cols-5 md:gap-0">
+        {
+          phases[lang].map((p, i) => (
+            <li class="phase group relative pl-6 md:pl-0 md:pr-6" data-phase={p.id}>
+              <span class="phase-line absolute top-1 bottom-0 left-0 w-[2px] bg-ink/15 md:top-0 md:right-0 md:bottom-auto md:h-[2px] md:w-full" aria-hidden="true">
+                <span class="phase-fill absolute inset-0 origin-top bg-ink md:origin-left" />
+              </span>
+              <span class="phase-tick absolute top-0 left-[-5px] h-3 w-3 rounded-full border-2 border-ink bg-paper md:top-[-5px] md:left-0" aria-hidden="true" />
+              <p class="mt-0 text-sm text-steel md:mt-6">{t.sector} {i + 1}</p>
+              <h3 class="phase-name display mt-1 text-[clamp(1.3rem,1.75vw,1.7rem)] transition-colors [--wdth:85] [--wght:750]">{p.name}</h3>
+              <p class="mt-2 max-w-[24ch] text-[0.95rem] text-steel">{p.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <!-- Proof: pick a project to see which phases it covered -->
+    <div class="mt-14 flex flex-wrap items-baseline gap-x-6 gap-y-3 md:mt-20">
+      <p class="text-steel">{t.see}</p>
+      {
+        phaseProjects.map((pr) => (
+          <button
+            type="button"
+            class="phase-project text-lg underline decoration-ink/25 underline-offset-4 transition-colors hover:decoration-red aria-pressed:decoration-red aria-pressed:decoration-2"
+            data-phases={pr.phases.join(',')}
+            aria-pressed="false"
+          >
+            {pr.name[lang]}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* A project is selected: phases it covered turn red, the rest fade back */
+  #phase-track[data-focus] .phase {
+    opacity: 0.35;
+    transition: opacity 0.3s;
+  }
+  #phase-track[data-focus] .phase.is-on {
+    opacity: 1;
+  }
+  #phase-track[data-focus] .phase.is-on .phase-fill {
+    background: var(--color-red);
+  }
+  #phase-track[data-focus] .phase.is-on .phase-name {
+    color: var(--color-red);
+  }
+  .phase {
+    transition: opacity 0.3s;
+  }
+</style>

@@ -1,0 +1,104 @@
+---
+import { Image } from 'astro:assets';
+import site1 from '../assets/magnetis-site-1.jpg';
+import site2 from '../assets/magnetis-site-2.jpg';
+import site3 from '../assets/magnetis-site-3.jpg';
+import site4 from '../assets/magnetis-site-4.jpg';
+import solar from '../assets/DJI_0422.JPG';
+import { getLang } from '../i18n';
+
+const t = {
+  en: {
+    subtitle: 'Engineering firm in Castellón, freelance since 2021',
+    website: 'Website',
+    websiteText: 'I designed and built their new site in Angular, from the first sketch to launch.',
+    visit: 'Visit magnetis.es',
+    drone: 'Drone inspections',
+    droneText: 'Aerial footage of solar installations, so clients can see the state of their panels.',
+    open: 'Open magnetis.es in a new tab',
+    droneAlt: 'Aerial drone shot of a solar installation',
+    shots: [
+      'magnetis.es home page with the Magnetis Ingeniería title over a landscape photo',
+      'magnetis.es services section, from first plan to commissioning',
+      'magnetis.es project list',
+      'magnetis.es careers and contact sections',
+    ],
+  },
+  es: {
+    subtitle: 'Ingeniería en Castellón, freelance desde 2021',
+    website: 'Web',
+    websiteText: 'Diseñé y desarrollé su nueva web en Angular, desde el primer boceto hasta el lanzamiento.',
+    visit: 'Visitar magnetis.es',
+    drone: 'Inspecciones con dron',
+    droneText: 'Imágenes aéreas de instalaciones solares, para que los clientes vean el estado de sus placas.',
+    open: 'Abrir magnetis.es en una pestaña nueva',
+    droneAlt: 'Foto aérea con dron de una instalación solar',
+    shots: [
+      'Portada de magnetis.es con el título Magnetis Ingeniería sobre una foto de paisaje',
+      'Sección de servicios de magnetis.es, del primer plano a la puesta en marcha',
+      'Lista de proyectos de magnetis.es',
+      'Secciones de empleo y contacto de magnetis.es',
+    ],
+  },
+}[getLang(Astro.currentLocale)];
+
+const screens = [site1, site2, site3, site4].map((src, i) => ({ src, alt: t.shots[i] }));
+---
+
+<section id="magnetis" class="relative py-24 md:py-32">
+  <div class="wrap grid gap-14 lg:grid-cols-[1fr_1.35fr] lg:items-center lg:gap-16">
+    <div>
+      <h2 class="display text-[clamp(2rem,4.2vw,3.6rem)] [--wdth:112] [--wght:800]">Magnetis Ingeniería</h2>
+      <p class="mt-2 text-steel">{t.subtitle}</p>
+
+      <dl class="mt-10 space-y-8">
+        <div>
+          <dt class="text-sm text-red">{t.website}</dt>
+          <dd class="mt-2 max-w-[38ch] text-lg leading-relaxed">
+            {t.websiteText}
+          </dd>
+          <dd class="mt-3">
+            <a href="https://www.magnetis.es" target="_blank" rel="noopener" class="font-semibold underline decoration-red decoration-2 underline-offset-4">{t.visit}</a>
+          </dd>
+        </div>
+        <div>
+          <dt class="text-sm text-red">{t.drone}</dt>
+          <dd class="mt-2 max-w-[38ch] text-lg leading-relaxed">
+            {t.droneText}
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- The site scrolls inside the window as you scroll the page; the drone shot floats over it -->
+    <div class="relative pb-16 lg:pb-20">
+      <a
+        href="https://www.magnetis.es"
+        target="_blank"
+        rel="noopener"
+        class="group block overflow-hidden rounded-[6px] bg-band shadow-[0_40px_80px_-30px_rgb(15_27_45/0.5)]"
+        aria-label={t.open}
+      >
+        <div class="flex items-center gap-1.5 px-3 py-2" aria-hidden="true">
+          <span class="h-2 w-2 rounded-full bg-on-band/25"></span>
+          <span class="h-2 w-2 rounded-full bg-on-band/25"></span>
+          <span class="h-2 w-2 rounded-full bg-on-band/25"></span>
+          <span class="ml-3 text-xs text-on-band/60">magnetis.es</span>
+        </div>
+        <div class="relative aspect-[16/10] overflow-hidden">
+          <div id="magnetis-scroll" class="absolute inset-x-0 top-0 will-change-transform">
+            {
+              screens.map((s, i) => (
+                <Image src={s.src} alt={i === 0 ? s.alt : ''} widths={[640, 1000, 1440]} sizes="(min-width: 1024px) 55vw, 100vw" class="block w-full" />
+              ))
+            }
+          </div>
+        </div>
+      </a>
+
+      <figure id="magnetis-drone" class="absolute bottom-0 left-2 w-[42%] overflow-hidden rounded-[4px] border-4 border-paper shadow-[0_24px_48px_-20px_rgb(15_27_45/0.5)] md:-left-10">
+        <Image src={solar} alt={t.droneAlt} widths={[400, 700]} sizes="25vw" class="aspect-[4/3] w-full object-cover" />
+      </figure>
+    </div>
+  </div>
+</section>

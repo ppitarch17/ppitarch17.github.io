@@ -1,0 +1,56 @@
+---
+import { getLang } from '../i18n';
+
+const t = {
+  en: {
+    hello: 'Say hello',
+    copy: 'Click to copy',
+    copied: 'Copied to your clipboard',
+    copyLabel: 'Copy my email address',
+    mail: 'Open in your mail app',
+    built: 'Built with Astro and GSAP. Photos are mine.',
+  },
+  es: {
+    hello: 'Escríbeme',
+    copy: 'Haz clic para copiar',
+    copied: 'Copiado al portapapeles',
+    copyLabel: 'Copiar mi dirección de correo',
+    mail: 'Abrir en tu app de correo',
+    built: 'Hecha con Astro y GSAP. Las fotos son mías.',
+  },
+}[getLang(Astro.currentLocale)];
+
+const email = 'pablopitarchlim@gmail.com';
+const [user, domain] = email.split('@');
+---
+
+<section id="contact" class="relative overflow-hidden pt-24 pb-10 md:pt-32">
+  <div class="wrap">
+    <h2 class="text-lg text-steel">{t.hello}</h2>
+
+    <button
+      id="copy-email"
+      type="button"
+      class="mt-4 block max-w-full text-left"
+      data-email={email}
+      aria-label={`${t.copyLabel}, ${email}`}
+    >
+      <span class="display block text-[clamp(1.7rem,5.2vw,4.8rem)] leading-[0.95] [--wght:800]" data-flex="email" aria-hidden="true">
+        <span class="block">{user}</span>
+        <span class="block text-steel">@{domain}</span>
+      </span>
+      <span id="copy-status" class="mt-5 inline-block text-steel" aria-live="polite" data-copied={t.copied}>{t.copy}</span>
+    </button>
+
+    <p class="mt-12 flex flex-wrap gap-x-8 gap-y-2 text-lg">
+      <a href="https://www.linkedin.com/in/pablo-pitarch/" target="_blank" rel="noopener" class="underline">LinkedIn</a>
+      <a href="https://github.com/ppitarch17" target="_blank" rel="noopener" class="underline">GitHub</a>
+      <a href={`mailto:${email}`} class="underline">{t.mail}</a>
+    </p>
+
+    <footer class="mt-20 flex flex-wrap justify-between gap-4 border-t border-ink/15 pt-6 text-sm text-steel">
+      <p>© {new Date().getFullYear()} Pablo Pitarch</p>
+      <p>{t.built}</p>
+    </footer>
+  </div>
+</section>

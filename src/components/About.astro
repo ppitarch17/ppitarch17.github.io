@@ -1,0 +1,144 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait.jpg';
+import landTopo from 'world-atlas/land-50m.json';
+import { feature } from 'topojson-client';
+import { geoContains } from 'd3-geo';
+import { tools } from '../data/skills';
+import { getLang } from '../i18n';
+
+const lang = getLang(Astro.currentLocale);
+const t = {
+  en: {
+    title: 'About',
+    portrait: 'Portrait of Pablo outdoors at sunset',
+    intro:
+      'I’m Pablo. I build web products from the first idea to production. Growing up between two countries taught me to adapt fast and to look at a problem from more than one side.',
+    map: 'Route map: Castellón, Spain, to Singapore, to Seoul, South Korea',
+    uses: 'Uses daily:',
+    off: 'Off the clock: tennis, motorsport, photography and the occasional drone flight.',
+    countries: { cs: 'Spain', sg: '', kr: 'South Korea' },
+    notes: {
+      cs: 'Born here, and now living just up the coast in Benicàssim. Studied at Universitat Jaume I.',
+      sg: 'My mum’s home. I visited every year growing up.',
+      kr: 'Exchange semester at Sejong University, 2022.',
+    },
+    names: { cs: 'Castellón', sg: 'Singapore', kr: 'Seoul' },
+  },
+  es: {
+    title: 'Sobre mí',
+    portrait: 'Retrato de Pablo al aire libre al atardecer',
+    intro:
+      'Soy Pablo. Construyo productos web desde la primera idea hasta producción. Crecer entre dos países me enseñó a adaptarme rápido y a mirar un problema desde más de un lado.',
+    map: 'Mapa de ruta: de Castellón, España, a Singapur y a Seúl, Corea del Sur',
+    uses: 'Uso a diario:',
+    off: 'Fuera del trabajo: tenis, motor, fotografía y algún que otro vuelo con dron.',
+    countries: { cs: 'España', sg: '', kr: 'Corea del Sur' },
+    notes: {
+      cs: 'Nací aquí y ahora vivo un poco más arriba en la costa, en Benicàssim. Estudié en la Universitat Jaume I.',
+      sg: 'El hogar de mi madre. Iba cada año mientras crecía.',
+      kr: 'Semestre de intercambio en la Sejong University, 2022.',
+    },
+    names: { cs: 'Castellón', sg: 'Singapur', kr: 'Seúl' },
+  },
+}[lang];
+
+// Equirectangular crop of the map: longitude -15..140, latitude 60..-5, drawn into a 1000×420 box
+const W = 1000;
+const H = 420;
+const project = (lat: number, lon: number) => ({ x: ((lon + 15) / 155) * W, y: ((60 - lat) / 65) * H });
+
+const places = (
+  [
+    { id: 'cs', ...project(39.99, -0.05) },
+    { id: 'sg', ...project(1.35, 103.82) },
+    { id: 'kr', ...project(37.57, 126.98) },
+  ] as const
+).map((p) => ({ ...p, name: t.names[p.id], country: t.countries[p.id], note: t.notes[p.id] }));
+
+// Land drawn as a dot grid, computed at build time (one path of round zero-length strokes)
+const land = feature(landTopo as any, (landTopo as any).objects.land) as any;
+const STEP = 13;
+let landDots = '';
+for (let y = STEP / 2; y < H; y += STEP) {
+  for (let x = STEP / 2; x < W; x += STEP) {
+    const lon = (x / W) * 155 - 15;
+    const lat = 60 - (y / H) * 65;
+    if (geoContains(land, [lon, lat])) landDots += `M${x.toFixed(0)} ${y.toFixed(0)}h0`;
+  }
+}
+
+// Flight arcs between consecutive places, bowed upwards
+const arcs = places.slice(1).map((to, i) => {
+  const from = places[i];
+  const mx = (from.x + to.x) / 2;
+  const my = Math.min(from.y, to.y) - Math.hypot(to.x - from.x, to.y - from.y) * 0.28;
+  return `M ${from.x.toFixed(1)} ${from.y.toFixed(1)} Q ${mx.toFixed(1)} ${my.toFixed(1)} ${to.x.toFixed(1)} ${to.y.toFixed(1)}`;
+});
+---
+
+<section id="about" class="relative py-24 md:py-32">
+  <div class="wrap">
+    <div class="grid gap-10 md:grid-cols-[auto_1fr] md:items-end md:gap-14">
+      <div class="about-portrait w-[min(260px,70%)] overflow-hidden rounded-[4px] md:w-[260px]">
+        <Image
+          src={portrait}
+          alt={t.portrait}
+          widths={[300, 520]}
+          sizes="260px"
+          class="aspect-[4/5] w-full object-cover"
+        />
+      </div>
+      <div>
+        <h2 class="display text-[clamp(2rem,4.2vw,3.6rem)] [--wdth:112] [--wght:800]">{t.title}</h2>
+        <p class="mt-5 max-w-[50ch] text-lg leading-relaxed">
+          {t.intro}
+        </p>
+      </div>
+    </div>
+
+    <!-- The route: the red dot flies it as you scroll -->
+    <div id="route" class="relative mt-16 md:mt-24">
+      <svg viewBox={`0 0 ${W} ${H}`} class="w-full overflow-visible" role="img" aria-label={t.map}>
+        <path d={landDots} stroke="currentColor" stroke-opacity="0.16" stroke-width="5" stroke-linecap="round" />
+        {arcs.map((d) => <path d={d} fill="none" stroke="currentColor" stroke-opacity="0.15" stroke-width="2" stroke-dasharray="3 7" />)}
+        {arcs.map((d) => <path class="route-arc" d={d} fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />)}
+        {
+          places.map((p) => (
+            <g class="route-place" data-place={p.id}>
+              <circle cx={p.x} cy={p.y} r="16" fill="var(--color-red)" fill-opacity="0.15" class="route-halo" />
+              <circle cx={p.x} cy={p.y} r="6" fill="currentColor" />
+            </g>
+          ))
+        }
+        <circle id="route-dot" r="8" fill="var(--color-red)" cx={places[0].x} cy={places[0].y}></circle>
+      </svg>
+
+      <ol class="mt-8 grid gap-6 sm:grid-cols-3">
+        {
+          places.map((p) => (
+            <li class="route-caption" data-place={p.id}>
+              <p class="display text-xl [--wdth:100] [--wght:750]">
+                {p.name}
+                {p.country && <span class="font-sans text-base font-normal text-steel">, {p.country}</span>}
+              </p>
+              <p class="mt-1 max-w-[30ch] text-steel">{p.note}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <div class="mt-14 grid gap-3 text-steel md:mt-20">
+      <p>
+        {t.uses}{' '}
+        {tools.map((tool, i) => (
+          <>
+            <span class="whitespace-nowrap text-ink" title={tool.note[lang]}>{tool.name}</span>{i < tools.length - 1 ? ', ' : '.'}
+          </>
+        ))}
+      </p>
+      <p>{t.off}</p>
+    </div>
+  </div>
+</section>

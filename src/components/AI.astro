@@ -1,0 +1,147 @@
+---
+import { agentLoop, aiItems } from '../data/ai';
+import { getLang } from '../i18n';
+
+const lang = getLang(Astro.currentLocale);
+const t = {
+  en: {
+    title: 'AI, built into real systems',
+    intro: 'My workflow is built around AI: agents, local models and AI wired into the systems I ship.',
+  },
+  es: {
+    title: 'IA, integrada en sistemas reales',
+    intro: 'Mi forma de trabajar gira en torno a la IA: agentes, modelos locales e IA integrada en los sistemas que entrego.',
+  },
+}[lang];
+
+const loop = agentLoop[lang];
+const items = aiItems[lang];
+
+// Node colours (literal class names so Tailwind picks them up)
+const nodeClass = {
+  human: 'fill-red/10 stroke-red',
+  agent: 'fill-blue/10 stroke-blue',
+  none: 'fill-on-band/10 stroke-on-band/50',
+};
+
+// Edges, in order: from -> to. The run walks them in `seq`, so the loop is travelled twice before the exit.
+const edgeLinks = [
+  [0, 1],
+  [1, 2],
+  [2, 3],
+  [3, 1], // back to planning
+  [3, 4], // exit to the human check
+  [4, 5],
+];
+const seq = [0, 1, 2, 3, 1, 2, 4, 5];
+
+// Wide layout: six nodes in a row, the return arc swings underneath
+const NW = 120;
+const NH = 56;
+const hx = (i: number) => i * 168;
+const hy = 20;
+const hcy = hy + NH / 2;
+const wide = {
+  vb: '0 0 960 175',
+  nodes: loop.nodes.map((n, i) => ({ ...n, x: hx(i), y: hy, w: NW, h: NH, tx: hx(i) + NW / 2, ty: hcy + 5, anchor: 'middle' })),
+  edges: [
+    ...[0, 1, 2].map((i) => `M ${hx(i) + NW + 4} ${hcy} L ${hx(i + 1) - 5} ${hcy}`),
+    `M ${hx(3) + NW / 2} ${hy + NH + 4} C ${hx(3) + NW / 2} 165, ${hx(1) + NW / 2} 165, ${hx(1) + NW / 2} ${hy + NH + 5}`,
+    `M ${hx(3) + NW + 4} ${hcy} L ${hx(4) - 5} ${hcy}`,
+    `M ${hx(4) + NW + 4} ${hcy} L ${hx(5) - 5} ${hcy}`,
+  ],
+};
+
+// Narrow layout: the same six nodes stacked, the return arc on the right
+const VW = 200;
+const VH = 48;
+const vx = 20;
+const vy = (i: number) => 8 + i * 80;
+const vcx = vx + VW / 2;
+const narrow = {
+  vb: '0 0 340 464',
+  nodes: loop.nodes.map((n, i) => ({ ...n, x: vx, y: vy(i), w: VW, h: VH, tx: vx + 16, ty: vy(i) + 30, anchor: 'start' })),
+  edges: [
+    ...[0, 1, 2].map((i) => `M ${vcx} ${vy(i) + VH + 4} L ${vcx} ${vy(i + 1) - 5}`),
+    `M ${vx + VW + 4} ${vy(3) + VH / 2} C 322 ${vy(3) + VH / 2}, 322 ${vy(1) + VH / 2}, ${vx + VW + 5} ${vy(1) + VH / 2}`,
+    `M ${vcx} ${vy(3) + VH + 4} L ${vcx} ${vy(4) - 5}`,
+    `M ${vcx} ${vy(4) + VH + 4} L ${vcx} ${vy(5) - 5}`,
+  ],
+};
+
+const layouts = [
+  { id: 'wide', cls: 'hidden w-full lg:block', ...wide },
+  { id: 'narrow', cls: 'mx-auto block w-full max-w-[380px] lg:hidden', ...narrow },
+];
+---
+
+<section id="ai" class="relative z-10 bg-band py-24 text-on-band md:py-32">
+  <div class="wrap">
+    <div class="max-w-[60ch]">
+      <h2 class="display text-[clamp(2rem,4.2vw,3.6rem)] [--wdth:112] [--wght:800]">{t.title}</h2>
+      <p class="mt-5 max-w-[46ch] text-lg leading-relaxed text-on-band/85">
+        {t.intro}
+      </p>
+    </div>
+
+    <figure class="mt-14 md:mt-16">
+      <div>
+        {
+          layouts.map((l) => (
+            <svg
+              class:list={['agent-loop', l.cls]}
+              data-layout={l.id}
+              data-seq={seq.join(',')}
+              viewBox={l.vb}
+              role="img"
+              aria-label={loop.label}
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <marker id={`loop-arrow-${l.id}`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M1 1 L9 5 L1 9 Z" class="fill-on-band/55" />
+                </marker>
+              </defs>
+
+              {l.edges.map((d) => (
+                <path d={d} fill="none" stroke-width="2" stroke-linecap="round" class="stroke-on-band/25" marker-end={`url(#loop-arrow-${l.id})`} />
+              ))}
+              {l.edges.map((d, i) => (
+                <path d={d} fill="none" stroke-width="2.5" stroke-linecap="round" class="loop-edge stroke-on-band/90" data-from={edgeLinks[i][0]} data-to={edgeLinks[i][1]} />
+              ))}
+
+              {l.nodes.map((n, i) => (
+                <g class="loop-node" data-node={i}>
+                  <rect x={n.x} y={n.y} width={n.w} height={n.h} rx="6" stroke-width="1.5" class={nodeClass[n.who]} />
+                  <text x={n.tx} y={n.ty} text-anchor={n.anchor} class="loop-title fill-on-band text-[15px]">
+                    {n.title}
+                  </text>
+                </g>
+              ))}
+
+              <circle class="loop-dot fill-on-band/25" r="14" cx={l.nodes[0].x} cy={l.nodes[0].y} />
+              <circle class="loop-dot fill-on-band" r="6" cx={l.nodes[0].x} cy={l.nodes[0].y} />
+            </svg>
+          ))
+        }
+      </div>
+
+    </figure>
+
+    <ul class="mt-14 grid gap-8 md:mt-16 lg:grid-cols-3 lg:gap-10">
+      {
+        items.map((it) => (
+          <li class="ai-item border-t border-on-band/20 pt-5">
+            <h3 class="display text-[clamp(1.4rem,2.2vw,1.8rem)] leading-[1.05] [--wdth:95] [--wght:700]">{it.title}</h3>
+            <p class="mt-3 text-on-band/85">{it.text}</p>
+            {it.link && (
+              <a href={it.link.href} class="mt-3 inline-block text-[0.95rem] underline decoration-red decoration-2 underline-offset-4 hover:text-red">
+                {it.link.label} →
+              </a>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
