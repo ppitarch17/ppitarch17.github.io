@@ -1,3 +1,12 @@
+---
+import { getLang } from '../i18n';
+
+const t = {
+  en: { role: 'Frontend product engineer', tagline: 'I design and build web apps end to end, with AI agents at my side.', hint: 'Hover my name, then follow the red dot.' },
+  es: { role: 'Ingeniero de producto frontend', tagline: 'Diseño y desarrollo aplicaciones web de principio a fin, con agentes de IA a mi lado.', hint: 'Pasa el ratón por mi nombre y sigue el punto rojo.' },
+}[getLang(Astro.currentLocale)];
+---
+
 <section id="top" class="relative flex min-h-[82svh] flex-col justify-end pt-28 md:min-h-[100svh] pb-10 md:pb-14">
   <div class="wrap">
     <h1 class="display select-none text-[clamp(4rem,14vw,14rem)] tracking-[-0.02em] whitespace-nowrap [--wght:800]" data-flex="hero" aria-label="Pablo Pitarch">
@@ -6,10 +15,11 @@
     </h1>
 
     <div class="mt-10 grid gap-6 md:mt-14 md:grid-cols-[1fr_auto] md:items-end" data-load>
-      <p class="max-w-[34ch] text-lg leading-snug">I design and build web apps end to end, with AI agents at my side.</p>
-      <p class="hidden text-sm text-steel lg:block lg:text-right">
-        Hover my name, then follow the red dot.
-      </p>
+      <div>
+        <p class="text-sm text-red">{t.role}</p>
+        <p class="mt-2 max-w-[30ch] text-xl leading-snug md:text-2xl">{t.tagline}</p>
+      </div>
+      <p class="hidden text-sm text-steel lg:block lg:text-right">{t.hint}</p>
     </div>
   </div>
 </section>

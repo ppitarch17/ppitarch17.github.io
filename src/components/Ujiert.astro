@@ -4,6 +4,45 @@ import bike from '../assets/UJIERT_03-01.jpg';
 import workshop from '../assets/PXL_20230924_182829945.jpg';
 import telemetry from '../assets/telemetriaUJIERT.jpeg';
 import paddock from '../assets/PXL_20231009_120559992.jpg';
+import { getLang } from '../i18n';
+
+const lang = getLang(Astro.currentLocale);
+const t = {
+  en: {
+    subtitle: 'UJI Electric Racing Team, MotoStudent VII, 2023',
+    logo: 'UJI Electric Racing Team logo. Click for a hot lap.',
+    labels: ['The bike', 'The build', 'My part', 'Results'],
+    texts: [
+      'A student-built electric race bike, designed and assembled by a team of nine to race at MotorLand Aragón.',
+      'Built by students in a workshop, piece by piece. I helped with the electrical wiring. With nine of us, every department had to work with every other.',
+      'I led telemetry: the system that logged the bike’s data on track, and the analysis we used to tune the motor.',
+    ],
+    alts: [
+      'The finished UJIERT_03 on its stand in the MotorLand Aragón pit lane',
+      'The UJIERT_03 half-built on a workshop lift, with its wiring and electronics exposed',
+      'Telemetry graphs recorded on the UJIERT_03',
+      'The UJIERT_03 in the team’s paddock tent during the competition',
+    ],
+    places: ['1st', '2nd', '3rd', '9th'],
+  },
+  es: {
+    subtitle: 'UJI Electric Racing Team, MotoStudent VII, 2023',
+    logo: 'Logo del UJI Electric Racing Team. Haz clic para una vuelta rápida.',
+    labels: ['La moto', 'La construcción', 'Mi parte', 'Resultados'],
+    texts: [
+      'Una moto de carreras eléctrica hecha por estudiantes, diseñada y montada por un equipo de nueve para correr en MotorLand Aragón.',
+      'Construida por estudiantes en un taller, pieza a pieza. Ayudé con el cableado eléctrico. Éramos nueve, así que cada departamento tenía que trabajar con todos los demás.',
+      'Dirigí la telemetría: el sistema que registraba los datos de la moto en pista y el análisis con el que ajustamos el motor.',
+    ],
+    alts: [
+      'La UJIERT_03 terminada sobre su caballete en el pit lane de MotorLand Aragón',
+      'La UJIERT_03 a medio montar en un elevador del taller, con el cableado y la electrónica a la vista',
+      'Gráficas de telemetría registradas en la UJIERT_03',
+      'La UJIERT_03 en la carpa del equipo en el paddock durante la competición',
+    ],
+    places: ['1.º', '2.º', '3.º', '9.º'],
+  },
+}[lang];
 
 // UJI Electric Racing Team swoosh, traced from the team banner.
 const logoPath =
@@ -45,39 +84,39 @@ function taperedOutline(d: string, minW = 2.5, maxW = 30, steps = 48) {
 const logoShape = taperedOutline(logoPath);
 
 const results = [
-  { place: '1st', race: 'Play-off Race' },
-  { place: '2nd', race: 'MS1 Finals' },
-  { place: '3rd', race: 'Red Bull MotoBoost InnoCall' },
-  { place: '9th', race: 'Final Race' },
+  { place: t.places[0], race: 'Play-off Race' },
+  { place: t.places[1], race: 'MS1 Finals' },
+  { place: t.places[2], race: 'Red Bull MotoBoost InnoCall' },
+  { place: t.places[3], race: 'Final Race' },
 ];
 
 const beats = [
   {
-    label: 'The bike',
-    text: 'A student-built electric race bike, designed and assembled by a team of nine to race at MotorLand Aragón.',
+    label: t.labels[0],
+    text: t.texts[0],
     img: bike,
-    alt: 'The finished UJIERT_03 on its stand in the MotorLand Aragón pit lane',
+    alt: t.alts[0],
     position: 'object-[40%_50%]',
   },
   {
-    label: 'The build',
-    text: 'Built by students in a workshop, piece by piece. I helped with the electrical wiring.',
+    label: t.labels[1],
+    text: t.texts[1],
     img: workshop,
-    alt: 'The UJIERT_03 half-built on a workshop lift, with its wiring and electronics exposed',
+    alt: t.alts[1],
     position: 'object-center',
   },
   {
-    label: 'My part',
-    text: 'I led telemetry: the system that logged the bike’s data on track, and the analysis we used to tune the motor.',
+    label: t.labels[2],
+    text: t.texts[2],
     img: telemetry,
-    alt: 'Telemetry graphs recorded on the UJIERT_03',
+    alt: t.alts[2],
     contain: true,
   },
   {
-    label: 'Results',
+    label: t.labels[3],
     results: true,
     img: paddock,
-    alt: 'The UJIERT_03 in the team’s paddock tent during the competition',
+    alt: t.alts[3],
     position: 'object-center',
   },
 ];
@@ -106,7 +145,7 @@ const beats = [
 
       <div class="relative">
         <h2 class="display text-[clamp(2rem,4.2vw,3.6rem)] [--wdth:112] [--wght:800]">UJIERT_03</h2>
-        <p class="mt-2 text-steel">UJI Electric Racing Team, MotoStudent VII, 2023</p>
+        <p class="mt-2 text-steel">{t.subtitle}</p>
 
         <div class="beats relative mt-10 lg:motion-safe:h-[260px]">
           {
@@ -137,7 +176,7 @@ const beats = [
         </div>
 
         <!-- Team logo, traced from the paddock banner. The red dot rides it as scroll progress; hover or click for a hot lap. -->
-        <button type="button" id="uji-logo" class="group mt-10 block w-[min(220px,60%)] text-left" aria-label="UJI Electric Racing Team logo. Click for a hot lap.">
+        <button type="button" id="uji-logo" class="group mt-10 block w-[min(220px,60%)] text-left" aria-label={t.logo}>
           <svg viewBox="-20 -30 1080 520" class="w-full overflow-visible" aria-hidden="true">
             <defs>
               <mask id="logo-mask-draw" maskUnits="userSpaceOnUse" x="-60" y="-60" width="1180" height="340">
@@ -147,11 +186,11 @@ const beats = [
                 <path id="logo-trail" d={logoPath} fill="none" stroke="#fff" stroke-width="46" />
               </mask>
             </defs>
-            <path d={logoShape} fill="#0f1b2d" fill-opacity="0.13" />
-            <path d={logoShape} fill="#0f1b2d" mask="url(#logo-mask-draw)" />
-            <path id="logo-trail-fill" d={logoShape} fill="#e13b2e" mask="url(#logo-mask-trail)" opacity="0" />
-            <circle id="logo-dot" r="19" fill="#e13b2e" cx="0" cy="155" />
-            <g class="logo-type" fill="#0f1b2d">
+            <path d={logoShape} fill="currentColor" fill-opacity="0.13" />
+            <path d={logoShape} fill="currentColor" mask="url(#logo-mask-draw)" />
+            <path id="logo-trail-fill" d={logoShape} fill="var(--color-red)" mask="url(#logo-mask-trail)" opacity="0" />
+            <circle id="logo-dot" r="19" fill="var(--color-red)" cx="0" cy="155" />
+            <g class="logo-type" fill="currentColor">
               <text x="0" y="335" font-size="150" font-weight="700" textLength="1035" lengthAdjust="spacing">UJI electric</text>
               <text x="0" y="470" font-size="108" font-weight="400" textLength="1035" lengthAdjust="spacing">Racing Team</text>
             </g>

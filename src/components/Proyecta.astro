@@ -1,0 +1,168 @@
+---
+import { Image } from 'astro:assets';
+import summary from '../assets/proyecta-summary.png';
+import voice1 from '../assets/proyecta-voice-1.png';
+import voice2 from '../assets/proyecta-voice-2.png';
+import voice3 from '../assets/proyecta-voice-3.png';
+import analytics from '../assets/proyecta-analytics.png';
+import project from '../assets/proyecta-project.png';
+
+import { getLang } from '../i18n';
+
+const t = {
+  en: {
+    subtitle: 'Project and finance manager for an engineering firm, 2026',
+    intro: 'It replaced the two spreadsheets the team kept by hand. Angular and Tailwind on the front, Node and SQLite behind it, and Claude built in.',
+    tabs: 'Proyecta features',
+    steps: 'Voice input steps',
+    demo: 'Screens show demo data.',
+    features: [
+      {
+        label: 'Daily summary',
+        text: 'Every morning Claude reads the open tasks, unpaid invoices and pending quotes, and writes what needs attention today, with a link to each one.',
+        alts: ['Proyecta home page with Claude’s daily summary of overdue tasks, late payments and quotes to follow up'],
+      },
+      {
+        label: 'Voice input',
+        text: 'Say what you need and Claude fills in the form: a task, a quote, an invoice. It flags anything it had to guess, and you check it before saving.',
+        alts: [
+          'Voice panel transcribing a spoken request for a new urgent task',
+          'Voice panel while Claude fills in the form',
+          'New task form filled in by Claude, with a note asking to confirm the linked project',
+        ],
+        steps: ['You speak', 'Claude fills it in', 'You check and save'],
+      },
+      {
+        label: 'Analytics',
+        text: 'Invoicing by year and type, and how long clients take to pay, built on records going back to 1999.',
+        alts: ['Analytics page with invoicing per year split into engineering and installations'],
+      },
+      {
+        label: 'Projects',
+        text: 'Each project on one page: its jobs, the quote it came from, every invoice and what is still unpaid.',
+        alts: ['Project page with its jobs, amounts invoiced and collected, and the original quote'],
+      },
+    ],
+  },
+  es: {
+    subtitle: 'Gestor de proyectos y finanzas para una ingeniería, 2026',
+    intro: 'Sustituyó las dos hojas de cálculo que el equipo llevaba a mano. Angular y Tailwind en el frontend, Node y SQLite detrás, y Claude integrado.',
+    tabs: 'Funciones de Proyecta',
+    steps: 'Pasos de la entrada por voz',
+    demo: 'Las capturas muestran datos de demostración.',
+    features: [
+      {
+        label: 'Resumen del día',
+        text: 'Cada mañana Claude lee las tareas abiertas, las facturas sin cobrar y los presupuestos pendientes, y escribe lo que hay que atender hoy, con un enlace a cada cosa.',
+        alts: ['Inicio de Proyecta con el resumen del día de Claude: tareas vencidas, cobros atrasados y presupuestos por seguir'],
+      },
+      {
+        label: 'Entrada por voz',
+        text: 'Dices lo que necesitas y Claude rellena el formulario: una tarea, un presupuesto, una factura. Avisa de lo que ha tenido que suponer, y tú lo revisas antes de guardar.',
+        alts: [
+          'Panel de voz transcribiendo una petición hablada de una nueva tarea urgente',
+          'Panel de voz mientras Claude rellena el formulario',
+          'Formulario de nueva tarea rellenado por Claude, con una nota que pide confirmar el proyecto asociado',
+        ],
+        steps: ['Hablas', 'Claude lo rellena', 'Revisas y guardas'],
+      },
+      {
+        label: 'Análisis',
+        text: 'Facturación por año y tipo, y cuánto tardan los clientes en pagar, con registros desde 1999.',
+        alts: ['Página de análisis con la facturación por año dividida en ingeniería e instalaciones'],
+      },
+      {
+        label: 'Proyectos',
+        text: 'Cada proyecto en una página: sus trabajos, el presupuesto del que salió, cada factura y lo que queda por cobrar.',
+        alts: ['Página de un proyecto con sus trabajos, lo facturado y cobrado, y el presupuesto original'],
+      },
+    ],
+  },
+}[getLang(Astro.currentLocale)];
+
+// Each feature owns one or more screens; the voice one plays its frames in order.
+const shots = [[summary], [voice1, voice2, voice3], [analytics], [project]];
+const features = t.features.map((f, i) => ({
+  ...f,
+  screens: shots[i].map((src, j) => ({ src, alt: f.alts[j], step: f.steps?.[j] })),
+}));
+---
+
+<section id="proyecta" class="relative py-24 md:py-32">
+  <div class="wrap grid gap-14 lg:grid-cols-[1.35fr_1fr] lg:items-center lg:gap-16">
+    <div class="order-2">
+      <h2 class="display text-[clamp(2rem,4.2vw,3.6rem)] [--wdth:112] [--wght:800]">Proyecta</h2>
+      <p class="mt-2 text-steel">{t.subtitle}</p>
+      <p class="mt-6 max-w-[42ch] text-lg leading-relaxed">
+        {t.intro}
+      </p>
+
+      <ul class="mt-8 divide-y divide-ink/10 border-y border-ink/10" role="tablist" aria-label={t.tabs}>
+        {
+          features.map((f, i) => (
+            <li>
+              <button
+                type="button"
+                role="tab"
+                id={`proyecta-tab-${i}`}
+                aria-controls="proyecta-screen"
+                aria-selected={i === 0 ? 'true' : 'false'}
+                data-feature={i}
+                class="proyecta-tab group block w-full py-4 text-left"
+              >
+                <span class="flex items-center gap-3 text-sm text-steel transition-colors group-aria-selected:text-red">
+                  <span class="h-2 w-2 rounded-full bg-current opacity-0 transition-opacity group-aria-selected:opacity-100" aria-hidden="true" />
+                  {f.label}
+                </span>
+                <span class="proyecta-text mt-2 hidden max-w-[40ch] leading-relaxed group-aria-selected:block">{f.text}</span>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="order-1">
+      <div class="overflow-hidden rounded-[6px] bg-band shadow-[0_40px_80px_-30px_rgb(15_27_45/0.5)]">
+        <div class="flex items-center gap-1.5 px-3 py-2" aria-hidden="true">
+          <span class="h-2 w-2 rounded-full bg-on-band/25"></span>
+          <span class="h-2 w-2 rounded-full bg-on-band/25"></span>
+          <span class="h-2 w-2 rounded-full bg-on-band/25"></span>
+          <span class="ml-3 text-xs text-on-band/60">Proyecta</span>
+        </div>
+        <div id="proyecta-screen" role="tabpanel" class="relative aspect-[16/10] overflow-hidden bg-paper">
+          {
+            features.flatMap((f, i) =>
+              f.screens.map((s, j) => (
+                <Image
+                  src={s.src}
+                  alt={s.alt}
+                  data-feature={i}
+                  data-frame={j}
+                  widths={[640, 1000, 1440, 2000]}
+                  sizes="(min-width: 1024px) 55vw, 100vw"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  class:list={['proyecta-shot absolute inset-0 h-full w-full transition-opacity duration-500', (i > 0 || j > 0) && 'opacity-0']}
+                />
+              )),
+            )
+          }
+        </div>
+      </div>
+
+      <div class="mt-4 flex min-h-6 flex-wrap items-center justify-between gap-x-6 gap-y-2 text-sm text-steel">
+        <ol id="proyecta-steps" class="hidden items-center gap-4" aria-label={t.steps}>
+          {
+            features[1].screens.map((s, j) => (
+              <li data-frame={j} class="proyecta-step flex items-center gap-2 transition-colors">
+                <span class="h-2 w-2 rounded-full bg-current" aria-hidden="true" />
+                {s.step}
+              </li>
+            ))
+          }
+        </ol>
+        <p class="ml-auto">{t.demo}</p>
+      </div>
+    </div>
+  </div>
+</section>

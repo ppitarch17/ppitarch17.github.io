@@ -306,6 +306,42 @@ if (mgScroll && !reduced) {
   });
 }
 
+/* ---------- Proyecta: each tab swaps the screen; voice input plays its frames in a loop ---------- */
+const proyectaTabs = $$<HTMLButtonElement>('.proyecta-tab');
+if (proyectaTabs.length) {
+  const shots = $$('.proyecta-shot');
+  const stepsEl = $('#proyecta-steps');
+  const steps = $$('.proyecta-step');
+  let timer = 0;
+  const show = (feature: number, frame = 0) => {
+    shots.forEach((s) => s.classList.toggle('opacity-0', !(+s.dataset.feature! === feature && +s.dataset.frame! === frame)));
+    steps.forEach((s, i) => (s.style.color = i === frame ? 'var(--color-red)' : ''));
+  };
+  const select = (i: number) => {
+    clearInterval(timer);
+    proyectaTabs.forEach((t, j) => t.setAttribute('aria-selected', String(i === j)));
+    const frames = shots.filter((s) => +s.dataset.feature! === i).length;
+    stepsEl?.classList.toggle('hidden', frames < 2);
+    stepsEl?.classList.toggle('flex', frames > 1);
+    show(i);
+    if (frames > 1) {
+      let frame = 0;
+      timer = window.setInterval(() => show(i, (frame = (frame + 1) % frames)), reduced ? 4000 : 2200);
+    }
+  };
+  const screen = $('#proyecta-screen');
+  proyectaTabs.forEach((t, i) =>
+    t.addEventListener('click', () => {
+      select(i);
+      // On phones the screen sits above the tabs: bring it back into view so the change is seen
+      if (screen && screen.getBoundingClientRect().top < 72) {
+        if (lenis) lenis.scrollTo(screen, { offset: -96, duration: 0.8 });
+        else screen.scrollIntoView();
+      }
+    }),
+  );
+}
+
 /* ---------- Start to finish: the dot drives through five sectors ---------- */
 const phaseTrack = $('#phase-track');
 if (phaseTrack) {
@@ -350,27 +386,54 @@ if (phaseTrack) {
   }
 }
 
-/* ---------- AI: the steps light up one by one as the line draws down ---------- */
-const aiSteps = $$('#ai-steps .ai-step');
-if (aiSteps.length) {
-  if (reduced) gsap.set('#ai-line', { scaleY: 1 });
-  else {
-    gsap.set('#ai-line', { scaleY: 0 });
-    gsap.set(aiSteps, { opacity: 0.25 });
-    ScrollTrigger.create({
-      trigger: '#ai-steps',
-      start: 'top 70%',
-      end: 'bottom 60%',
-      scrub: 0.5,
-      onUpdate: ({ progress }) => {
-        gsap.set('#ai-line', { scaleY: progress });
-        aiSteps.forEach((el, i) => {
-          const on = progress >= i / aiSteps.length - 0.02;
-          gsap.to(el, { opacity: on ? 1 : 0.25, duration: 0.3, overwrite: true });
-        });
-      },
+/* ---------- AI: a dot runs the agent loop (twice round, then out to the human check) ---------- */
+mm.add('(min-width: 1024px)', () => runAgentLoop('wide'));
+mm.add('(max-width: 1023px)', () => runAgentLoop('narrow'));
+
+function runAgentLoop(layout: string) {
+  const loop = $<SVGSVGElement>(`.agent-loop[data-layout="${layout}"]`);
+  if (!loop) return;
+  const edges = $$<SVGPathElement>('.loop-edge', loop);
+  const nodes = $$<SVGGElement>('.loop-node', loop);
+  const dots = $$<SVGCircleElement>('.loop-dot', loop);
+  const seq = (loop.dataset.seq ?? '').split(',').map(Number);
+  const lens = edges.map((e) => e.getTotalLength());
+  const set = (p: number) => {
+    const span = p * seq.length;
+    // an edge is drawn as far as the furthest pass along it
+    const lit = edges.map(() => 0);
+    seq.forEach((e, k) => (lit[e] = Math.max(lit[e], clamp01(span - k))));
+    edges.forEach((e, i) => {
+      e.style.strokeDasharray = `${lens[i]}`;
+      e.style.strokeDashoffset = String(lens[i] * (1 - lit[i]));
     });
-  }
+    const k = Math.min(seq.length - 1, Math.floor(span));
+    const pt = edges[seq[k]].getPointAtLength(lens[seq[k]] * clamp01(span - k));
+    for (const d of dots) {
+      d.setAttribute('cx', pt.x.toFixed(1));
+      d.setAttribute('cy', pt.y.toFixed(1));
+    }
+    // a node lights once the dot has arrived at it
+    const reached = new Set([0]);
+    seq.forEach((e, j) => span >= j + 1 - 0.04 && reached.add(Number(edges[e].dataset.to)));
+    nodes.forEach((n, i) => (n.style.opacity = reached.has(i) ? '1' : '0.35'));
+  };
+  if (reduced) return set(1);
+  set(0);
+  const st = ScrollTrigger.create({ trigger: loop, start: 'top 75%', end: 'bottom 45%', scrub: 0.6, onUpdate: (s) => set(s.progress) });
+  return () => st.kill();
+}
+
+/* ---------- AI: the three items rise in as they arrive ---------- */
+if (!reduced && $('.ai-item')) {
+  gsap.from('.ai-item', {
+    y: 28,
+    opacity: 0,
+    duration: 0.8,
+    ease: 'power2.out',
+    stagger: 0.12,
+    scrollTrigger: { trigger: '.ai-item', start: 'top 85%', once: true },
+  });
 }
 
 /* ---------- Gravity Puzzle: flip gravity on the screenshot and the title ---------- */
@@ -404,6 +467,63 @@ if (gravityTitle && gravityImg) {
   }
 }
 
+/* ---------- Theme toggle: follows the system until the visitor picks one ---------- */
+const themeBtn = $<HTMLButtonElement>('#theme-toggle');
+const themeColors = { light: '#e9ecef', dark: '#0a0a0a' };
+const currentTheme = () => (document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
+function applyTheme(theme: 'light' | 'dark', animate = false) {
+  const root = document.documentElement;
+  if (animate && !reduced) {
+    root.classList.add('theme-anim');
+    setTimeout(() => root.classList.remove('theme-anim'), 400);
+  }
+  root.dataset.theme = theme;
+  themeBtn?.setAttribute('aria-pressed', String(theme === 'dark'));
+  $('meta[name="theme-color"]')?.setAttribute('content', themeColors[theme]);
+}
+applyTheme(currentTheme());
+themeBtn?.addEventListener('click', () => {
+  const next = currentTheme() === 'dark' ? 'light' : 'dark';
+  applyTheme(next, true);
+  try {
+    localStorage.setItem('theme', next);
+  } catch {
+    /* storage blocked: the choice lasts for this visit only */
+  }
+});
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  let saved: string | null = null;
+  try {
+    saved = localStorage.getItem('theme');
+  } catch {
+    /* ignore */
+  }
+  if (saved !== 'dark' && saved !== 'light') applyTheme(e.matches ? 'dark' : 'light', true);
+});
+
+/* ---------- Mobile menu: panel under the header, closes on link, Escape and outside click ---------- */
+const menuBtn = $<HTMLButtonElement>('#menu-toggle');
+const menuPanel = $('#menu-panel');
+const menuOpen = () => menuBtn?.getAttribute('aria-expanded') === 'true';
+function setMenu(open: boolean) {
+  if (!menuBtn || !menuPanel) return;
+  menuBtn.setAttribute('aria-expanded', String(open));
+  menuPanel.toggleAttribute('data-open', open);
+  if (open) $('#nav')!.style.transform = '';
+}
+menuBtn?.addEventListener('click', () => setMenu(!menuOpen()));
+if (menuPanel) for (const a of $$('a', menuPanel)) a.addEventListener('click', () => setMenu(false));
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && menuOpen()) {
+    setMenu(false);
+    menuBtn?.focus();
+  }
+});
+document.addEventListener('pointerdown', (e) => {
+  if (menuOpen() && !(e.target as Element).closest('#nav')) setMenu(false);
+});
+matchMedia('(min-width: 640px)').addEventListener('change', (e) => e.matches && setMenu(false));
+
 /* ---------- Copy email ---------- */
 const copyBtn = $('#copy-email');
 const copyStatus = $('#copy-status');
@@ -416,10 +536,11 @@ copyBtn?.addEventListener('click', async () => {
     return;
   }
   if (!copyStatus) return;
-  copyStatus.textContent = 'Copied to your clipboard';
+  const idle = copyStatus.textContent;
+  copyStatus.textContent = copyStatus.dataset.copied!;
   copyStatus.classList.add('text-red');
   setTimeout(() => {
-    copyStatus.textContent = 'Click to copy';
+    copyStatus.textContent = idle;
     copyStatus.classList.remove('text-red');
   }, 2200);
 });
@@ -507,7 +628,7 @@ ScrollTrigger.create({
   start: 0,
   end: 'max',
   onUpdate: (self) => {
-    if (nav) nav.style.transform = self.direction === 1 && self.scroll() > 400 ? 'translateY(-100%)' : '';
+    if (nav) nav.style.transform = !menuOpen() && self.direction === 1 && self.scroll() > 400 ? 'translateY(-100%)' : '';
   },
 });
 

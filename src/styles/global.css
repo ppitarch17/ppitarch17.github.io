@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 @theme {
   --color-paper: #e9ecef;
   --color-paper-2: #dfe3e8;
@@ -9,9 +11,27 @@
   --color-red: #e13b2e;
   --color-steel: #566172;
   --color-steel-light: #9aa4b2;
+  /* Intentionally dark bands (AI section, browser frames): a surface and the text that sits on it */
+  --color-band: #0f1b2d;
+  --color-on-band: #e9ecef;
 
   --font-display: 'Anybody', 'Arial Narrow', sans-serif;
   --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Dark theme: redefine the tokens. Dark bands become a slightly raised surface instead of flipping to light. */
+html[data-theme='dark'] {
+  color-scheme: dark;
+  --color-paper: #0a0a0a;
+  --color-paper-2: #141414;
+  --color-ink: #ededed;
+  --color-ink-2: #c8c8c8;
+  --color-steel: #a3a3a3;
+  --color-steel-light: #808080;
+  --color-blue: #4a9be6;
+  --color-red: #e8630a;
+  --color-band: #1a1a1a;
+  --color-on-band: #ededed;
 }
 
 @layer base {
@@ -33,7 +53,10 @@
   }
   ::selection {
     background: var(--color-red);
-    color: var(--color-paper);
+    color: #fff;
+  }
+  html[data-theme='dark'] ::selection {
+    color: #0a0a0a;
   }
   :focus-visible {
     outline: 2px solid var(--color-red);
@@ -65,6 +88,34 @@
   @media (width >= 1024px) {
     padding-right: 11vw;
   }
+}
+
+/* Short colour fade while the theme is toggled (class is added by JS only, so first paint never animates) */
+html.theme-anim,
+html.theme-anim *,
+html.theme-anim *::before,
+html.theme-anim *::after {
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    fill 0.35s ease,
+    stroke 0.35s ease !important;
+}
+
+.theme-icon-sun {
+  display: none;
+}
+html[data-theme='dark'] .theme-icon-sun {
+  display: block;
+}
+html[data-theme='dark'] .theme-icon-moon {
+  display: none;
+}
+
+.loop-title {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 100, 'wght' 700;
 }
 
 .flex-char {
