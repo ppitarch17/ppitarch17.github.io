@@ -2,14 +2,94 @@
 import { getLang } from '../i18n';
 
 const t = {
-  en: { role: 'Frontend product engineer', tagline: 'I design and build web apps end to end, with AI agents at my side.', hint: 'Hover my name, then follow the red dot.' },
-  es: { role: 'Ingeniero de producto frontend', tagline: 'Diseño y desarrollo aplicaciones web de principio a fin, con agentes de IA a mi lado.', hint: 'Pasa el ratón por mi nombre y sigue el punto rojo.' },
+  en: {
+    role: 'Frontend product engineer',
+    tagline: 'I design and build web apps end to end, with AI agents at my side.',
+    hint: 'Hover my name, then follow the red dot.',
+    facts: [
+      { label: 'Based in', value: 'Benicàssim, Spain' },
+      { label: 'Now', value: 'Amazing Up · Magnetis' },
+      { label: 'Works with', value: 'Angular · TypeScript · AI agents' },
+      { label: 'Speaks', value: 'English · Spanish' },
+    ],
+  },
+  es: {
+    role: 'Ingeniero de producto frontend',
+    tagline: 'Diseño y desarrollo aplicaciones web de principio a fin, con agentes de IA a mi lado.',
+    hint: 'Pasa el ratón por mi nombre y sigue el punto rojo.',
+    facts: [
+      { label: 'Vivo en', value: 'Benicàssim, España' },
+      { label: 'Ahora', value: 'Amazing Up · Magnetis' },
+      { label: 'Trabajo con', value: 'Angular · TypeScript · agentes de IA' },
+      { label: 'Hablo', value: 'Inglés · español' },
+    ],
+  },
 }[getLang(Astro.currentLocale)];
+
+// Background: a made-up lap of telemetry (speed and throttle), drawn at build time. Decorative only.
+const W = 1000;
+const H = 400;
+const corners = [0.07, 0.19, 0.3, 0.44, 0.57, 0.66, 0.8, 0.92, 1.06]; // where each braking zone ends
+const apex = [0.38, 0.55, 0.26, 0.62, 0.3, 0.48, 0.2, 0.58, 0.4]; // speed carried through each corner
+const N = 260;
+const speed: number[] = [];
+const throttle: number[] = [];
+for (let i = 0; i <= N; i++) {
+  const x = i / N;
+  const k = corners.findIndex((c) => x < c);
+  const start = k === 0 ? -0.06 : corners[k - 1];
+  const len = corners[k] - start;
+  const from = k === 0 ? 0.45 : apex[k - 1];
+  const brakeAt = corners[k] - len * 0.22;
+  const top = (d: number) => 1 - (1 - from) * Math.exp(-9 * d);
+  if (x < brakeAt) {
+    speed.push(top(x - start));
+    throttle.push(1);
+  } else {
+    const p = (x - brakeAt) / (corners[k] - brakeAt);
+    const peak = top(brakeAt - start);
+    speed.push(peak + (apex[k] - peak) * p);
+    throttle.push(0);
+  }
+}
+// ease the throttle edges so it reads as a pedal, not a square wave
+const pedal = throttle.map((_, i) => {
+  const win = throttle.slice(Math.max(0, i - 3), i + 4);
+  return win.reduce((a, b) => a + b, 0) / win.length;
+});
+const line = (vals: number[], y0: number, h: number) =>
+  vals.map((v, i) => `${i ? 'L' : 'M'}${((i / N) * W).toFixed(1)} ${(y0 + (1 - v) * h).toFixed(1)}`).join(' ');
+const speedPath = line(speed, 20, 250);
+const pedalPath = line(pedal, 320, 60);
+const gridPath = [20, 82.5, 145, 207.5, 270].map((y) => `M0 ${y}H${W}`).join(' ');
 ---
 
-<section id="top" class="relative flex min-h-[82svh] flex-col justify-end pt-28 md:min-h-[100svh] pb-10 md:pb-14">
-  <div class="wrap">
-    <h1 class="display select-none text-[clamp(4rem,14vw,14rem)] tracking-[-0.02em] whitespace-nowrap [--wght:800]" data-flex="hero" aria-label="Pablo Pitarch">
+<section id="top" class="relative flex min-h-[82svh] flex-col justify-between gap-10 overflow-hidden pt-24 pb-10 md:min-h-[100svh] md:pt-28 md:pb-14">
+  <!-- Telemetry traces behind the name -->
+  <div class="hero-trace pointer-events-none absolute inset-x-0 top-[36%] h-[38%] text-ink md:top-[20%] md:h-[52%]" aria-hidden="true">
+    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" class="h-full w-full">
+      <path d={gridPath} fill="none" stroke="currentColor" stroke-opacity="0.07" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+      <path d={speedPath} fill="none" stroke="currentColor" stroke-opacity="0.22" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+      <path d={pedalPath} fill="none" stroke="var(--color-red)" stroke-opacity="0.55" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+    </svg>
+  </div>
+
+  <!-- Key facts along the top edge, so the space above the name reads as a frame, not a gap -->
+  <div class="wrap relative" data-load>
+    <dl class="grid grid-cols-2 gap-x-6 gap-y-5 border-t border-ink/15 pt-4 text-sm md:grid-cols-4">
+      {
+        t.facts.map((f) => (
+          <div>
+            <dt class="text-steel">{f.label}</dt>
+            <dd class="mt-1">{f.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+
+  <div class="wrap relative">
+    <h1 class="display select-none text-[clamp(4.5rem,min(17vw,24svh),17rem)] tracking-[-0.02em] whitespace-nowrap [--wght:800]" data-flex="hero" aria-label="Pablo Pitarch">
       <span class="block" aria-hidden="true">Pablo</span>
       <span class="block" aria-hidden="true">Pitarch</span>
     </h1>
@@ -23,3 +103,23 @@ const t = {
     </div>
   </div>
 </section>
+
+<style>
+  /* Fade the traces out at both ends, and wipe them in from the left on load */
+  .hero-trace {
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 80%, transparent);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-trace svg {
+      animation: trace-in 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s both;
+    }
+  }
+  @keyframes trace-in {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+</style>

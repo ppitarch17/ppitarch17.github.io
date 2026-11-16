@@ -386,7 +386,7 @@ if (phaseTrack) {
   }
 }
 
-/* ---------- AI: a dot runs the agent loop (twice round, then out to the human check) ---------- */
+/* ---------- AI: a dot runs the agent pipeline (one retry from the reviewer, then out to the human check) ---------- */
 mm.add('(min-width: 1024px)', () => runAgentLoop('wide'));
 mm.add('(max-width: 1023px)', () => runAgentLoop('narrow'));
 
@@ -424,7 +424,7 @@ function runAgentLoop(layout: string) {
   return () => st.kill();
 }
 
-/* ---------- AI: the three items rise in as they arrive ---------- */
+/* ---------- AI: the evidence blocks rise in as they arrive ---------- */
 if (!reduced && $('.ai-item')) {
   gsap.from('.ai-item', {
     y: 28,
